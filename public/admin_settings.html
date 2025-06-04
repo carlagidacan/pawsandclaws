@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinic Settings | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="admin_dashboard.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div class="clinic-name">Paws & Claws<br>Admin Dashboard</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_clients.html"><i class="fas fa-users me-1"></i> Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_pets.html"><i class="fas fa-paw me-1"></i> Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_services.html"><i class="fas fa-clinic-medical me-1"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_products.html"><i class="fas fa-box-open me-1"></i> Products</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_settings.html"><i class="fas fa-cog me-1"></i> Settings</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary login" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <!-- Sidebar -->
+<div class="col-lg-2 d-none d-lg-block sidebar">
+    <div class="list-group list-group-flush rounded-3 shadow-sm">
+        <a href="admin.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="admin_appointments.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-calendar me-2"></i> Appointments
+        </a>
+        <a href="admin_orders.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+        <a href="admin_clients.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-users me-2"></i> Clients
+        </a>
+        <a href="admin_pets.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-paw me-2"></i> Pets
+        </a>
+        <a href="admin_services.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-clinic-medical me-2"></i> Services
+        </a>
+        <a href="admin_products.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-box-open me-2"></i> Products
+        </a>
+        <a href="admin_settings.html" class="list-group-item list-group-item-action active py-3" style="background-color: #0d6efd; color: white; border-left: 4px solid #0a58ca;">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+    </div>
+</div>
+            
+            <!-- Main Settings Content -->
+            <div class="col-lg-10">
+                <!-- Settings Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #4A628A;">Clinic Settings</h2>
+                    <div class="text-muted">Last updated: May 15, 2025</div>
+                </div>
+                
+                <!-- Settings Tabs -->
+                <ul class="nav nav-tabs mb-4" id="settingsTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="clinic-tab" data-bs-toggle="tab" data-bs-target="#clinic" type="button" role="tab">
+                            <i class="fas fa-hospital me-1"></i> Clinic Info
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="business-tab" data-bs-toggle="tab" data-bs-target="#business" type="button" role="tab">
+                            <i class="fas fa-business-time me-1"></i> Business Hours
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="staff-tab" data-bs-toggle="tab" data-bs-target="#staff" type="button" role="tab">
+                            <i class="fas fa-user-md me-1"></i> Staff Accounts
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="billing-tab" data-bs-toggle="tab" data-bs-target="#billing" type="button" role="tab">
+                            <i class="fas fa-money-bill-wave me-1"></i> Billing
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="notifications-tab" data-bs-toggle="tab" data-bs-target="#notifications" type="button" role="tab">
+                            <i class="fas fa-bell me-1"></i> Notifications
+                        </button>
+                    </li>
+                </ul>
+                
+                <!-- Settings Tab Content -->
+                <div class="tab-content" id="settingsTabContent">
+                    <!-- Clinic Info Tab -->
+                    <div class="tab-pane fade show active" id="clinic" role="tabpanel">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0">
+                                <h5 class="mb-0" style="color: #4A628A;">Clinic Information</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label for="clinicName" class="form-label">Clinic Name</label>
+                                            <input type="text" class="form-control" id="clinicName" value="Paws & Claws Vet Clinic">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="clinicEmail" class="form-label">Email Address</label>
+                                            <input type="email" class="form-control" id="clinicEmail" value="contact@pawsandclaws.com">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="clinicPhone" class="form-label">Phone Number</label>
+                                            <input type="tel" class="form-control" id="clinicPhone" value="+63 2 8123 4567">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="clinicWebsite" class="form-label">Website</label>
+                                            <input type="url" class="form-control" id="clinicWebsite" value="https://pawsandclaws.com">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="clinicAddress" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="clinicAddress" value="123 Pet Street, Makati City">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="clinicCity" class="form-label">City</label>
+                                            <input type="text" class="form-control" id="clinicCity" value="Makati">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="clinicProvince" class="form-label">Province</label>
+                                            <select id="clinicProvince" class="form-select">
+                                                <option>Metro Manila</option>
+                                                <option selected>NCR</option>
+                                                <option>Bulacan</option>
+                                                <option>Cavite</option>
+                                                <option>Laguna</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="clinicZip" class="form-label">ZIP Code</label>
+                                            <input type="text" class="form-control" id="clinicZip" value="1200">
+                                        </div>
+                                        <div class="col-12">
+                                            <label for="clinicAbout" class="form-label">About Clinic</label>
+                                            <textarea class="form-control" id="clinicAbout" rows="3">Paws & Claws is a comprehensive veterinary facility, providing a wide range of services to keep your pets healthy and happy.</textarea>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Clinic Logo</label>
+                                            <div class="d-flex align-items-center">
+                                                <img src="assets/images/logo.png" alt="Clinic Logo" height="80" class="rounded me-3">
+                                                <input type="file" class="form-control w-auto" accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                        <button type="button" class="btn btn-outline-secondary ms-2">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Business Hours Tab -->
+                    <div class="tab-pane fade" id="business" role="tabpanel">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0">
+                                <h5 class="mb-0 text-primary">Business Hours</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Day</th>
+                                                    <th>Opening Time</th>
+                                                    <th>Closing Time</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Monday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="08:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="18:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="mondayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Tuesday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="08:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="18:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="tuesdayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Wednesday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="08:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="18:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="wednesdayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Thursday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="08:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="18:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="thursdayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Friday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="08:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="18:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="fridayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Saturday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="09:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="15:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="saturdayStatus" checked>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Sunday</td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="09:00">
+                                                    </td>
+                                                    <td>
+                                                        <input type="time" class="form-control" value="12:00">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch">
+                                                            <input class="form-check-input" type="checkbox" id="sundayStatus">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-primary">Save Hours</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Staff Accounts Tab -->
+                    <div class="tab-pane fade" id="staff" role="tabpanel">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0 text-primary">Staff Accounts</h5>
+                                <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">
+                                    <i class="fas fa-plus me-1"></i> Add Staff
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Last Login</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Staff" class="rounded-circle me-2" width="32" height="32">
+                                                        Dr. Maria Santos
+                                                    </div>
+                                                </td>
+                                                <td>maria.santos@pawsandclaws.com</td>
+                                                <td><span class="badge bg-primary">Veterinarian</span></td>
+                                                <td>May 15, 2025 09:24 AM</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-key"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Staff" class="rounded-circle me-2" width="32" height="32">
+                                                        Juan Dela Cruz
+                                                    </div>
+                                                </td>
+                                                <td>juan.delacruz@pawsandclaws.com</td>
+                                                <td><span class="badge bg-secondary">Technician</span></td>
+                                                <td>May 14, 2025 02:45 PM</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-key"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Staff" class="rounded-circle me-2" width="32" height="32">
+                                                        Andrea Reyes
+                                                    </div>
+                                                </td>
+                                                <td>andrea.reyes@pawsandclaws.com</td>
+                                                <td><span class="badge bg-info">Receptionist</span></td>
+                                                <td>May 15, 2025 08:15 AM</td>
+                                                <td><span class="badge bg-success">Active</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-key"></i></button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Staff" class="rounded-circle me-2" width="32" height="32">
+                                                        Robert Lim
+                                                    </div>
+                                                </td>
+                                                <td>robert.lim@pawsandclaws.com</td>
+                                                <td><span class="badge bg-warning">Groomer</span></td>
+                                                <td>May 13, 2025 10:30 AM</td>
+                                                <td><span class="badge bg-secondary">Inactive</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary me-1"><i class="fas fa-edit"></i></button>
+                                                    <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-key"></i></button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Billing Tab -->
+                    <div class="tab-pane fade" id="billing" role="tabpanel">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0">
+                                <h5 class="mb-0 text-primary">Billing & Payments</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Currency</label>
+                                            <select class="form-select">
+                                                <option selected>Philippine Peso (₱)</option>
+                                                <option>US Dollar ($)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Tax Rate (%)</label>
+                                            <input type="number" class="form-control" value="12" min="0" max="30" step="0.1">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="applyTax" checked>
+                                                <label class="form-check-label" for="applyTax">
+                                                    Apply tax to services
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="applyTaxProducts" checked>
+                                                <label class="form-check-label" for="applyTaxProducts">
+                                                    Apply tax to products
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Payment Methods</label>
+                                            <div class="border rounded p-3">
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="cashPayment" checked>
+                                                    <label class="form-check-label" for="cashPayment">
+                                                        Cash
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="creditCardPayment" checked>
+                                                    <label class="form-check-label" for="creditCardPayment">
+                                                        Credit/Debit Card
+                                                    </label>
+                                                </div>
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="checkbox" id="gcashPayment" checked>
+                                                    <label class="form-check-label" for="gcashPayment">
+                                                        GCash
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="bankTransferPayment">
+                                                    <label class="form-check-label" for="bankTransferPayment">
+                                                        Bank Transfer
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label">Clinic Bank Details</label>
+                                            <textarea class="form-control" rows="3" placeholder="Enter bank account information for transfers">Bank: BDO
+Account Name: Paws & Claws Vet Clinic
+Account Number: 123 456 7890</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary">Save Settings</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Notifications Tab -->
+                    <div class="tab-pane fade" id="notifications" role="tabpanel">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-header bg-white border-0">
+                                <h5 class="mb-0 text-primary">Notification Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <h6 class="mb-3">Email Notifications</h6>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="newAppointmentEmail" checked>
+                                                <label class="form-check-label" for="newAppointmentEmail">
+                                                    New appointment bookings
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="cancelAppointmentEmail" checked>
+                                                <label class="form-check-label" for="cancelAppointmentEmail">
+                                                    Appointment cancellations
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="newOrderEmail" checked>
+                                                <label class="form-check-label" for="newOrderEmail">
+                                                    New product orders
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="lowStockEmail" checked>
+                                                <label class="form-check-label" for="lowStockEmail">
+                                                    Low stock alerts
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h6 class="mb-3">SMS Notifications</h6>
+                                    <div class="row g-3 mb-4">
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="appointmentReminderSMS" checked>
+                                                <label class="form-check-label" for="appointmentReminderSMS">
+                                                    Appointment reminders (24hr before)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-check form-switch">
+                                                <input class="form-check-input" type="checkbox" id="orderConfirmationSMS">
+                                                <label class="form-check-label" for="orderConfirmationSMS">
+                                                    Order confirmations
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <h6 class="mb-3">Admin Alerts</h6>
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <label class="form-label">Email for Alerts</label>
+                                            <input type="email" class="form-control" value="admin@pawsandclaws.com">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="form-label">Mobile for SMS Alerts</label>
+                                            <input type="tel" class="form-control" value="+63 912 345 6789">
+                                        </div>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-primary">Save Notification Settings</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Staff Modal -->
+    <div class="modal fade" id="addStaffModal" tabindex="-1" aria-labelledby="addStaffModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addStaffModalLabel">Add New Staff Member</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="staffName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="staffName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staffEmail" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="staffEmail" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staffRole" class="form-label">Role</label>
+                            <select class="form-select" id="staffRole" required>
+                                <option value="" selected disabled>Select role</option>
+                                <option>Veterinarian</option>
+                                <option>Technician</option>
+                                <option>Receptionist</option>
+                                <option>Groomer</option>
+                                <option>Administrator</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="staffPhone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="staffPhone">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Profile Photo</label>
+                            <input type="file" class="form-control" accept="image/*">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="sendWelcomeEmail" checked>
+                            <label class="form-check-label" for="sendWelcomeEmail">
+                                Send welcome email with login details
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Add Staff</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="admin_script.js"></script>
+</body>
+</html>
+
+// Function to handle logout
+function handleLogout() {
+    if (confirm("Are you sure you want to log out?")) {
+        // Redirect to home page after confirmation
+        window.location.href = "home.html";
+    }
+}

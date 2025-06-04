@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="admin_dashboard.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div class="clinic-name">Paws & Claws<br>Admin Dashboard</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_appointments.html"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_orders.html"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_clients.html"><i class="fas fa-users me-1"></i> Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_pets.html"><i class="fas fa-paw me-1"></i> Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_services.html"><i class="fas fa-clinic-medical me-1"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_products.html"><i class="fas fa-box-open me-1"></i> Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html"><i class="fas fa-cog me-1"></i> Settings</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary login" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+          <!-- Sidebar -->
+<div class="col-lg-2 d-none d-lg-block sidebar">
+    <div class="list-group list-group-flush rounded-3 shadow-sm">
+        <a href="admin.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="admin_appointments.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-calendar me-2"></i> Appointments
+        </a>
+        <a href="admin_orders.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+        <a href="admin_clients.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-users me-2"></i> Clients
+        </a>
+        <a href="admin_pets.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-paw me-2"></i> Pets
+        </a>
+        <a href="admin_services.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-clinic-medical me-2"></i> Services
+        </a>
+        <a href="admin_products.html" class="list-group-item list-group-item-action active py-3" style="background-color: #0d6efd; color: white; border-left: 4px solid #0a58ca;">
+            <i class="fas fa-box-open me-2"></i> Products
+        </a>
+        <a href="admin_settings.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+    </div>
+</div>
+            
+            <!-- Main Products Content -->
+            <div class="col-lg-10">
+                <!-- Products Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #4A628A;">Products Inventory</h2>
+                    <div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                            <i class="fas fa-plus me-1"></i> Add New Product
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Products Filter and Search -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search products...">
+                                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option selected>Filter by Category</option>
+                                    <option>Food</option>
+                                    <option>Medicine</option>
+                                    <option>Supplements</option>
+                                    <option>Accessories</option>
+                                    <option>Grooming</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select">
+                                    <option selected>Filter by Status</option>
+                                    <option>In Stock</option>
+                                    <option>Low Stock</option>
+                                    <option>Out of Stock</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select">
+                                    <option selected>Sort by</option>
+                                    <option>Newest</option>
+                                    <option>Price: Low to High</option>
+                                    <option>Price: High to Low</option>
+                                    <option>Most Popular</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Inventory Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Total Products</h6>
+                                        <h3 class="mb-0">87</h3>
+                                    </div>
+                                    <div class="stat-icon bg-primary-light">
+                                        <i class="fas fa-boxes text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 5 new</span>
+                                    <span class="text-muted ms-2">this month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">In Stock</h6>
+                                        <h3 class="mb-0">72</h3>
+                                    </div>
+                                    <div class="stat-icon bg-success-light">
+                                        <i class="fas fa-check-circle text-success"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-danger"><i class="fas fa-arrow-down me-1"></i> 3</span>
+                                    <span class="text-muted ms-2">since last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Low Stock</h6>
+                                        <h3 class="mb-0">9</h3>
+                                    </div>
+                                    <div class="stat-icon bg-warning-light">
+                                        <i class="fas fa-exclamation-triangle text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-danger"><i class="fas fa-arrow-up me-1"></i> 2</span>
+                                    <span class="text-muted ms-2">needs reorder</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Out of Stock</h6>
+                                        <h3 class="mb-0">6</h3>
+                                    </div>
+                                    <div class="stat-icon bg-danger-light">
+                                        <i class="fas fa-times-circle text-danger"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-down me-1"></i> 1</span>
+                                    <span class="text-muted ms-2">restocked</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Products Table -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" style="color: #4A628A;">All Products</h5>
+                        <div class="text-muted">Showing 1 to 8 of 87 products</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Product ID</th>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#PROD-2056</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Dog+Food" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Premium Dog Food (5kg)</div>
+                                                    <small class="text-muted">SKU: DF-5001</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Food</td>
+                                        <td>₱1,250</td>
+                                        <td>24</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2055</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Flea+Treatment" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Flea & Tick Treatment</div>
+                                                    <small class="text-muted">SKU: FT-3002</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Medicine</td>
+                                        <td>₱450</td>
+                                        <td>8</td>
+                                        <td><span class="badge bg-warning">Low Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2054</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Cat+Carrier" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Premium Cat Carrier</div>
+                                                    <small class="text-muted">SKU: CC-1005</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Accessories</td>
+                                        <td>₱1,800</td>
+                                        <td>0</td>
+                                        <td><span class="badge bg-danger">Out of Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2053</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Joint+Supplement" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Joint Care Supplement</div>
+                                                    <small class="text-muted">SKU: JS-2008</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Supplements</td>
+                                        <td>₱750</td>
+                                        <td>15</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2052</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Shampoo" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Hypoallergenic Shampoo</div>
+                                                    <small class="text-muted">SKU: HS-4003</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Grooming</td>
+                                        <td>₱350</td>
+                                        <td>32</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2051</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Cat+Food" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Grain-Free Cat Food (2kg)</div>
+                                                    <small class="text-muted">SKU: CF-5002</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Food</td>
+                                        <td>₱950</td>
+                                        <td>5</td>
+                                        <td><span class="badge bg-warning">Low Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2050</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Dog+Leash" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Retractable Dog Leash</div>
+                                                    <small class="text-muted">SKU: DL-1008</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Accessories</td>
+                                        <td>₱650</td>
+                                        <td>18</td>
+                                        <td><span class="badge bg-success">In Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PROD-2049</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://via.placeholder.com/50x50?text=Dewormer" alt="Product" class="rounded me-2 product-thumb">
+                                                <div>
+                                                    <div class="fw-bold">Broad-Spectrum Dewormer</div>
+                                                    <small class="text-muted">SKU: DW-3005</small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>Medicine</td>
+                                        <td>₱280</td>
+                                        <td>0</td>
+                                        <td><span class="badge bg-danger">Out of Stock</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-4">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="productName" class="form-label">Product Name</label>
+                                <input type="text" class="form-control" id="productName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productSKU" class="form-label">SKU</label>
+                                <input type="text" class="form-control" id="productSKU" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productCategory" class="form-label">Category</label>
+                                <select class="form-select" id="productCategory" required>
+                                    <option value="" selected disabled>Select category</option>
+                                    <option>Food</option>
+                                    <option>Medicine</option>
+                                    <option>Supplements</option>
+                                    <option>Accessories</option>
+                                    <option>Grooming</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="productBrand" class="form-label">Brand</label>
+                                <input type="text" class="form-control" id="productBrand">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="productPrice" class="form-label">Price (₱)</label>
+                                <input type="number" class="form-control" id="productPrice" min="0" step="0.01" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="productCost" class="form-label">Cost (₱)</label>
+                                <input type="number" class="form-control" id="productCost" min="0" step="0.01">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="productStock" class="form-label">Stock Quantity</label>
+                                <input type="number" class="form-control" id="productStock" min="0" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="productDescription" class="form-label">Description</label>
+                                <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Product Image</label>
+                                <input type="file" class="form-control" accept="image/*">
+                                <div class="form-text">Upload a high-quality image of the product (max 2MB)</div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="productActive" checked>
+                                    <label class="form-check-label" for="productActive">
+                                        Active (available for sale)
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="admin_script.js"></script>
+    <script>
+        // Function to fetch and display products
+        async function loadProducts() {
+            try {
+                const response = await fetch('/api/products');
+                const products = await response.json();
+                displayProducts(products);
+            } catch (error) {
+                console.error('Error fetching products:', error);
+                // Fall back to sample data if API fails
+                displayProducts(sampleProducts);
+            }
+        }
+
+        // Function to display products in the table
+        function displayProducts(products) {
+            const productsTableBody = document.querySelector('table tbody');
+            productsTableBody.innerHTML = ''; // Clear existing rows
+            
+            // Loop through products and create table rows
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>
+                        <div>
+                            <div class="fw-bold">${product.name}</div>
+                            <small class="text-muted">SKU: ${product.sku}</small>
+                        </div>
+                    </td>
+                    <td>${product.category}</td>
+                    <td>₱${product.price}</td>
+                    <td>${product.stock}</td>
+                    <td><span class="badge bg-${
+                        product.stock > 10 ? 'success' : 
+                        product.stock > 0 ? 'warning' : 'danger'
+                    }">${
+                        product.stock > 10 ? 'In Stock' : 
+                        product.stock > 0 ? 'Low Stock' : 'Out of Stock'
+                    }</span></td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="viewProduct('${product.id}')"><i class="fas fa-eye me-2"></i>View</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="editProduct('${product.id}')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="duplicateProduct('${product.id}')"><i class="fas fa-copy me-2"></i>Duplicate</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="deleteProduct('${product.id}')"><i class="fas fa-trash me-2"></i>Delete</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                `;
+                productsTableBody.appendChild(row);
+            });
+        }
+
+        // Sample data for products (fallback if API fails)
+        const sampleProducts = [
+            {
+                id: '#PROD-2056',
+                name: 'Premium Dog Food (5kg)',
+                sku: 'DF-5001',
+                category: 'Food',
+                price: '1,250',
+                stock: 24,
+                image: 'https://via.placeholder.com/50x50?text=Dog+Food'
+            },
+            {
+                id: '#PROD-2055',
+                name: 'Flea & Tick Treatment',
+                sku: 'FT-3002',
+                category: 'Medicine',
+                price: '450',
+                stock: 8,
+                image: 'https://via.placeholder.com/50x50?text=Flea+Treatment'
+            },
+            {
+                id: '#PROD-2054',
+                name: 'Premium Cat Carrier',
+                sku: 'CC-1005',
+                category: 'Accessories',
+                price: '1,800',
+                stock: 0,
+                image: 'https://via.placeholder.com/50x50?text=Cat+Carrier'
+            },
+            {
+                id: '#PROD-2053',
+                name: 'Joint Care Supplement',
+                sku: 'JS-2008',
+                category: 'Supplements',
+                price: '750',
+                stock: 15,
+                image: 'https://via.placeholder.com/50x50?text=Joint+Supplement'
+            },
+            {
+                id: '#PROD-2052',
+                name: 'Hypoallergenic Shampoo',
+                sku: 'HS-4003',
+                category: 'Grooming',
+                price: '350',
+                stock: 32,
+                image: 'https://via.placeholder.com/50x50?text=Shampoo'
+            },
+            {
+                id: '#PROD-2051',
+                name: 'Grain-Free Cat Food (2kg)',
+                sku: 'CF-5002',
+                category: 'Food',
+                price: '950',
+                stock: 5,
+                image: 'https://via.placeholder.com/50x50?text=Cat+Food'
+            },
+            {
+                id: '#PROD-2050',
+                name: 'Retractable Dog Leash',
+                sku: 'DL-1008',
+                category: 'Accessories',
+                price: '650',
+                stock: 18,
+                image: 'https://via.placeholder.com/50x50?text=Dog+Leash'
+            },
+            {
+                id: '#PROD-2049',
+                name: 'Broad-Spectrum Dewormer',
+                sku: 'DW-3005',
+                category: 'Medicine',
+                price: '280',
+                stock: 0,
+                image: 'https://via.placeholder.com/50x50?text=Dewormer'
+            }
+        ];
+
+        // Function to view product details
+        async function viewProduct(productId) {
+            try {
+                const response = await fetch(`/api/products/${productId}`);
+                const product = await response.json();
+                
+                // You could show a modal with product details here
+                alert(`Viewing details for ${product.name}`);
+            } catch (error) {
+                console.error('Error fetching product details:', error);
+            }
+        }
+
+        // Function to edit product
+        function editProduct(productId) {
+            // You could open the edit modal and populate it with product data
+            alert(`Editing product ${productId}`);
+        }
+
+        // Function to duplicate product
+        async function duplicateProduct(productId) {
+            try {
+                const response = await fetch(`/api/products/${productId}/duplicate`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    // Reload products to show the duplicated item
+                    loadProducts();
+                }
+            } catch (error) {
+                console.error('Error duplicating product:', error);
+            }
+        }
+
+        // Function to delete product
+        async function deleteProduct(productId) {
+            if (confirm(`Are you sure you want to delete product ${productId}?`)) {
+                try {
+                    const response = await fetch(`/api/products/${productId}`, {
+                        method: 'DELETE'
+                    });
+                    
+                    if (response.ok) {
+                        // Reload products to reflect the deletion
+                        loadProducts();
+                    }
+                } catch (error) {
+                    console.error('Error deleting product:', error);
+                }
+            }
+        }
+
+        // Function to handle search
+        function searchProducts() {
+            const searchInput = document.querySelector('input[placeholder="Search products..."]');
+            const searchTerm = searchInput.value.toLowerCase();
+            
+            // Filter the products based on search term
+            const filteredProducts = sampleProducts.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) || 
+                product.sku.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm)
+            );
+            
+            displayProducts(filteredProducts);
+        }
+
+        // Function to handle logout
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Redirect to home page after confirmation
+                window.location.href = "home.html";
+            }
+        }
+
+        // Add event listener for when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load products when page loads
+            loadProducts();
+            
+            // Add event listener for search button
+            const searchButton = document.querySelector('.input-group button');
+            if (searchButton) {
+                searchButton.addEventListener('click', searchProducts);
+            }
+            
+            // Add event listener for search input (search on Enter key)
+            const searchInput = document.querySelector('input[placeholder="Search products..."]');
+            if (searchInput) {
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        searchProducts();
+                    }
+                });
+            }
+            
+            // Add event listener for category filter
+            const categoryFilter = document.querySelector('select[option="Filter by Category"]');
+            if (categoryFilter) {
+                categoryFilter.addEventListener('change', function() {
+                    const category = this.value;
+                    if (category === 'Filter by Category') {
+                        loadProducts(); // Reset to show all products
+                    } else {
+                        // Filter products by selected category
+                        const filteredProducts = sampleProducts.filter(product => 
+                            product.category === category
+                        );
+                        displayProducts(filteredProducts);
+                    }
+                });
+            }
+            
+            // Handle form submission for adding new product
+            const addProductForm = document.querySelector('#addProductModal form');
+            if (addProductForm) {
+                addProductForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = new FormData(addProductForm);
+                    const newProduct = {
+                        id: `#PROD-${Math.floor(1000 + Math.random() * 9000)}`,
+                        name: formData.get('productName'),
+                        sku: formData.get('productSKU'),
+                        category: formData.get('productCategory'),
+                        price: formData.get('productPrice'),
+                        stock: parseInt(formData.get('productStock')),
+                        image: 'https://via.placeholder.com/50x50?text=New+Product'
+                    };
+                    
+                    try {
+                        const response = await fetch('/api/products', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newProduct)
+                        });
+                        
+                        if (response.ok) {
+                            // Close modal and reload products
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+                            modal.hide();
+                            addProductForm.reset();
+                            loadProducts();
+                        }
+                    } catch (error) {
+                        console.error('Error adding new product:', error);
+                        // Add the new product to our sample data for demo purposes
+                        sampleProducts.unshift(newProduct);
+                        loadProducts();
+                        // Close modal
+                        const modal = bootstrap.Modal.getInstance(document.getElementById('addProductModal'));
+                        modal.hide();
+                        addProductForm.reset();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

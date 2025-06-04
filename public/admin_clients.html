@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients Management | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+        <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="admin_dashboard.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div class="clinic-name">Paws & Claws<br>Admin Dashboard</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_appointments.html"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_orders.html"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_clients.html"><i class="fas fa-users me-1"></i> Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_pets.html"><i class="fas fa-paw me-1"></i> Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_services.html"><i class="fas fa-clinic-medical me-1"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_products.html"><i class="fas fa-box-open me-1"></i> Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html"><i class="fas fa-cog me-1"></i> Settings</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary login" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+<!-- Sidebar -->
+<div class="col-lg-2 d-none d-lg-block sidebar">
+    <div class="list-group list-group-flush rounded-3 shadow-sm">
+        <a href="admin.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="admin_appointments.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-calendar me-2"></i> Appointments
+        </a>
+        <a href="admin_orders.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+        <a href="admin_clients.html" class="list-group-item list-group-item-action active py-3" style="background-color: #0d6efd; color: white; border-left: 4px solid #0a58ca;">
+            <i class="fas fa-users me-2"></i> Clients
+        </a>
+        <a href="admin_pets.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-paw me-2"></i> Pets
+        </a>
+        <a href="admin_services.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-clinic-medical me-2"></i> Services
+        </a>
+        <a href="admin_products.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-box-open me-2"></i> Products
+        </a>
+        <a href="admin_settings.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+    </div>
+</div>
+           
+            
+            <!-- Main Clients Content -->
+            <div class="col-lg-10">
+                <!-- Clients Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #4A628A;">Clients Management</h2>
+                    <div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+                            <i class="fas fa-user-plus me-1"></i> Add New Client
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Clients Filter and Search -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search clients...">
+                                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option selected>Filter by Status</option>
+                                    <option>Active</option>
+                                    <option>Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option selected>Sort by</option>
+                                    <option>Newest First</option>
+                                    <option>Oldest First</option>
+                                    <option>Name (A-Z)</option>
+                                    <option>Name (Z-A)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Clients Table -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" style="color: #4A628A;">All Clients</h5>
+                        <div class="text-muted">Showing 1 to 8 of 25 clients</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Client ID</th>
+                                        <th>Name</th>
+                                        <th>Contact</th>
+                                        <th>Email</th>
+                                        <th>Pets</th>
+                                        <th>Last Visit</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="clientsTableBody">
+                                    <!-- Client rows will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-4">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Client Modal -->
+    <div class="modal fade" id="addClientModal" tabindex="-1" aria-labelledby="addClientModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addClientModalLabel">Add New Client</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="firstName" class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="firstName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="lastName" class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="lastName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="state" class="form-label">Province</label>
+                                <select id="state" class="form-select">
+                                    <option selected>Metro Manila</option>
+                                    <option>Bulacan</option>
+                                    <option>Cavite</option>
+                                    <option>Laguna</option>
+                                    <option>Rizal</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="zip" class="form-label">Zip</label>
+                                <input type="text" class="form-control" id="zip" required>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sendWelcomeEmail">
+                                    <label class="form-check-label" for="sendWelcomeEmail">
+                                        Send welcome email with account details
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Save Client</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="admin_script.js"></script>
+    <script>
+        // Function to handle logout
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Redirect to home page after confirmation
+                window.location.href = "home.html";
+            }
+        }
+
+        // Function to fetch and display clients
+        async function loadClients() {
+            try {
+                const response = await fetch('/api/clients');
+                const clients = await response.json();
+                displayClients(clients);
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+                // Fall back to sample data if API fails
+                displayClients(sampleClients);
+            }
+        }
+
+        // Function to display clients in the table
+        function displayClients(clients) {
+            const clientsTableBody = document.getElementById('clientsTableBody');
+            clientsTableBody.innerHTML = ''; // Clear existing rows
+            
+            // Loop through clients and create table rows
+            clients.forEach(client => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${client.id}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${client.image}" alt="Client" class="rounded-circle me-2" width="32" height="32">
+                            ${client.name}
+                        </div>
+                    </td>
+                    <td>${client.contact}</td>
+                    <td>${client.email}</td>
+                    <td>${client.pets}</td>
+                    <td>${client.lastVisit}</td>
+                    <td><span class="badge bg-${client.status === 'Active' ? 'success' : 'warning'}">${client.status}</span></td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="viewClient('${client.id}')"><i class="fas fa-eye me-2"></i>View</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="editClient('${client.id}')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-file-invoice me-2"></i>Invoices</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item ${client.status === 'Active' ? 'text-danger' : 'text-success'}" href="#" onclick="toggleStatus('${client.id}')">
+                                    <i class="fas ${client.status === 'Active' ? 'fa-ban' : 'fa-check'} me-2"></i>
+                                    ${client.status === 'Active' ? 'Deactivate' : 'Activate'}
+                                </a></li>
+                            </ul>
+                        </div>
+                    </td>
+                `;
+                clientsTableBody.appendChild(row);
+            });
+        }
+
+        // Function to toggle client status
+        async function toggleStatus(clientId) {
+            try {
+                const response = await fetch(`/api/clients/${clientId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Reload clients to reflect the change
+                    loadClients();
+                }
+            } catch (error) {
+                console.error('Error updating client status:', error);
+            }
+        }
+
+        // Function to view client details
+        async function viewClient(clientId) {
+            try {
+                const response = await fetch(`/api/clients/${clientId}`);
+                const client = await response.json();
+                
+                // You could show a modal with client details here
+                alert(`Viewing details for ${client.name}`);
+            } catch (error) {
+                console.error('Error fetching client details:', error);
+            }
+        }
+
+        // Function to edit client
+        function editClient(clientId) {
+            // You could open the edit modal and populate it with client data
+            alert(`Editing client ${clientId}`);
+        }
+
+        // Add event listener for the Add New Client form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load clients when page loads
+            loadClients();
+            
+            // Handle form submission for adding new client
+            const addClientForm = document.querySelector('#addClientModal form');
+            if (addClientForm) {
+                addClientForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = new FormData(addClientForm);
+                    const newClient = {
+                        name: `${formData.get('firstName')} ${formData.get('lastName')}`,
+                        email: formData.get('email'),
+                        contact: formData.get('phone'),
+                        image: 'https://randomuser.me/api/portraits/lego/1.jpg', // Default image
+                        pets: 0,
+                        lastVisit: 'N/A',
+                        status: 'Active'
+                    };
+                    
+                    try {
+                        const response = await fetch('/api/clients', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newClient)
+                        });
+                        
+                        if (response.ok) {
+                            // Close modal and reload clients
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addClientModal'));
+                            modal.hide();
+                            addClientForm.reset();
+                            loadClients();
+                        }
+                    } catch (error) {
+                        console.error('Error adding new client:', error);
+                    }
+                });
+            }
+        });
+
+        // Sample data for clients (fallback if API fails)
+        const sampleClients = [
+            {
+                id: 'PC-1001',
+                name: 'Maria Santos',
+                image: 'https://randomuser.me/api/portraits/women/44.jpg',
+                contact: '0917 123 4567',
+                email: 'maria.santos@example.com',
+                pets: 2,
+                lastVisit: 'May 8, 2025',
+                status: 'Active'
+            },
+            {
+                id: 'PC-1002',
+                name: 'Juan Dela Cruz',
+                image: 'https://randomuser.me/api/portraits/men/32.jpg',
+                contact: '0918 765 4321',
+                email: 'juan.delacruz@example.com',
+                pets: 1,
+                lastVisit: 'May 5, 2025',
+                status: 'Active'
+            },
+            {
+                id: 'PC-1003',
+                name: 'Andrea Reyes',
+                image: 'https://randomuser.me/api/portraits/women/68.jpg',
+                contact: '0919 987 6543',
+                email: 'andrea.reyes@example.com',
+                pets: 3,
+                lastVisit: 'May 3, 2025',
+                status: 'Active'
+            },
+            {
+                id: 'PC-1004',
+                name: 'Robert Lim',
+                image: 'https://randomuser.me/api/portraits/men/45.jpg',
+                contact: '0920 456 7890',
+                email: 'robert.lim@example.com',
+                pets: 1,
+                lastVisit: 'May 1, 2025',
+                status: 'Inactive'
+            },
+            {
+                id: 'PC-1005',
+                name: 'Elizabeth Tan',
+                image: 'https://randomuser.me/api/portraits/women/22.jpg',
+                contact: '0921 234 5678',
+                email: 'elizabeth.tan@example.com',
+                pets: 2,
+                lastVisit: 'April 28, 2025',
+                status: 'Active'
+            }
+        ];
+    </script>
+</body>
+</html>

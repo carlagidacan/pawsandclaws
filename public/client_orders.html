@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="client_style.css">
+    <style>
+        /* Navigation styles */
+        .nav-link {
+            color: #4A628A !important;
+            font-weight: 500;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary {
+            color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #4A628A !important;
+            color: white !important;
+        }
+        
+        .btn-primary {
+            background-color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        .order-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 45px;
+            margin-bottom: 20px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #dee2e6;
+        }
+        
+        .timeline-item:last-child:before {
+            height: 50%;
+        }
+        
+        .timeline-badge {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        
+        .timeline-content {
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="client_home.html">
+                <div>
+                    <div style="color: #4A628A; font-size: 22px; font-weight: 500; line-height: 1.2;">Paws & Claws</div>
+                    <div style="color: #000000; font-size: 18px; line-height: 1.2;">Client Portal</div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="client_home.html" style="color: #4A628A;"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_appointments.html" style="color: #4A628A;"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_pets.html" style="color: #4A628A;"><i class="fas fa-paw me-1"></i> My Pets</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="client_orders.html" style="color: #4A628A; font-weight: 600;"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_shop.html" style="color: #4A628A;"><i class="fas fa-shopping-cart me-1"></i> Shop</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_payments.html" style="color: #4A628A;"><i class="fas fa-credit-card me-1"></i> Payments</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary" href="#" onclick="handleLogout()" style="color: #4A628A; border-color: #4A628A;">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #4A628A;"><i class="fas fa-shopping-bag me-2"></i> My Orders</h2>
+            <a href="client_shop.html" class="btn btn-primary">
+                <i class="fas fa-shopping-cart me-1"></i> Continue Shopping
+            </a>
+        </div>
+        
+        <!-- Filter and Search Bar -->
+        <div class="card shadow-sm mb-4 border-0">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Date Range</label>
+                        <div class="input-group">
+                            <input type="date" class="form-control" value="2025-01-01">
+                            <span class="input-group-text">to</span>
+                            <input type="date" class="form-control" value="2025-05-10">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-select">
+                            <option value="">All Statuses</option>
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Sort By</label>
+                        <select class="form-select">
+                            <option value="date_desc">Date (Newest First)</option>
+                            <option value="date_asc">Date (Oldest First)</option>
+                            <option value="total_desc">Total (High to Low)</option>
+                            <option value="total_asc">Total (Low to High)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Search</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Order # or product...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Orders List -->
+        <div class="row g-4">
+            <!-- Order 1 -->
+            <div class="col-12">
+                <div class="card order-card border-0 shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <h5 class="mb-0" style="color: #4A628A;">Order #PC-10025</h5>
+                            <span class="text-muted">Placed on May 10, 2025</span>
+                        </div>
+                        <span class="badge bg-success">Delivered</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex mb-3">
+                                    <div class="bg-light rounded p-3 me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-drumstick-bite fa-2x" style="color: #4A628A;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Premium Dog Food (5kg)</h6>
+                                        <p class="text-muted mb-1">Quantity: 1</p>
+                                        <p class="mb-0">₱1,000</p>
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="bg-light rounded p-3 me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-bone fa-2x" style="color: #4A628A;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Chew Toy Set</h6>
+                                        <p class="text-muted mb-1">Quantity: 1</p>
+                                        <p class="mb-0">₱250</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 border-start">
+                                <h6 class="mb-3">Order Summary</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Subtotal:</span>
+                                    <span>₱1,250</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Shipping:</span>
+                                    <span>₱0</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="text-muted">Total:</span>
+                                    <span class="fw-bold">₱1,250</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Payment Method:</span>
+                                    <span>Credit Card</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Shipping Method:</span>
+                                    <span>Standard Shipping</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#trackingModal">
+                                <i class="fas fa-truck me-1"></i> Track Order
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-receipt me-1"></i> View Invoice
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-primary">
+                                <i class="fas fa-redo me-1"></i> Reorder
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order 2 -->
+            <div class="col-12">
+                <div class="card order-card border-0 shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <h5 class="mb-0" style="color: #4A628A;">Order #PC-10024</h5>
+                            <span class="text-muted">Placed on May 2, 2025</span>
+                        </div>
+                        <span class="badge bg-info">Processing</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex">
+                                    <div class="bg-light rounded p-3 me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-pills fa-2x" style="color: #4A628A;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Flea & Tick Treatment</h6>
+                                        <p class="text-muted mb-1">Quantity: 2</p>
+                                        <p class="mb-0">₱900</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 border-start">
+                                <h6 class="mb-3">Order Summary</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Subtotal:</span>
+                                    <span>₱900</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Shipping:</span>
+                                    <span>₱50</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="text-muted">Total:</span>
+                                    <span class="fw-bold">₱950</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Payment Method:</span>
+                                    <span>GCash</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Shipping Method:</span>
+                                    <span>Express Shipping</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#trackingModal">
+                                <i class="fas fa-truck me-1"></i> Track Order
+                            </button>
+                            <button class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-receipt me-1"></i> View Invoice
+                            </button>
+                        </div>
+                        <div>
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-times me-1"></i> Cancel Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Order 3 -->
+            <div class="col-12">
+                <div class="card order-card border-0 shadow-sm">
+                    <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <h5 class="mb-0" style="color: #4A628A;">Order #PC-10023</h5>
+                            <span class="text-muted">Placed on April 15, 2025</span>
+                        </div>
+                        <span class="badge bg-danger">Cancelled</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex">
+                                    <div class="bg-light rounded p-3 me-3 d-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                                        <i class="fas fa-fish fa-2x" style="color: #4A628A;"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-1">Premium Cat Food (3kg)</h6>
+                                        <p class="text-muted mb-1">Quantity: 1</p>
+                                        <p class="mb-0">₱950</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 border-start">
+                                <h6 class="mb-3">Order Summary</h6>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Subtotal:</span>
+                                    <span>₱950</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Shipping:</span>
+                                    <span>₱50</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-3">
+                                    <span class="text-muted">Total:</span>
+                                    <span class="fw-bold">₱1,000</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="text-muted">Payment Method:</span>
+                                    <span>Cash on Delivery</span>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span class="text-muted">Shipping Method:</span>
+                                    <span>Standard Shipping</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="alert alert-danger mt-3 mb-0">
+                            <i class="fas fa-info-circle me-2"></i> This order was cancelled due to out-of-stock items.
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary me-2">
+                                <i class="fas fa-receipt me-1"></i> View Invoice
+                            </button>

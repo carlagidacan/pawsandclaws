@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="client_style.css">
+    <style>
+        /* Navigation styles */
+        .nav-link {
+            color: #4A628A !important;
+            font-weight: 500;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary {
+            color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #4A628A !important;
+            color: white !important;
+        }
+        
+        .btn-primary {
+            background-color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        .support-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        
+        .faq-item {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .faq-question {
+            cursor: pointer;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            font-weight: 500;
+            color: #4A628A;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .faq-answer {
+            padding: 15px 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        
+        .chat-message {
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            max-width: 80%;
+        }
+        
+        .chat-message.user {
+            background-color: #4A628A;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .chat-message.support {
+            background-color: #f0f2f5;
+            color: #212529;
+        }
+        
+        .chat-input {
+            border-radius: 20px;
+            padding-right: 50px;
+        }
+        
+        .chat-send-btn {
+            position: absolute;
+            right: 10px;
+            top: 5px;
+            border: none;
+            background: none;
+            color: #4A628A;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="client_home.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div>
+                    <div style="color: #4A628A; font-size: 22px; font-weight: 500; line-height: 1.2;">Paws & Claws</div>
+                    <div style="color: #000000; font-size: 18px; line-height: 1.2;">Client Portal</div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="client_home.html" style="color: #4A628A;"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_appointments.html" style="color: #4A628A;"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_pets.html" style="color: #4A628A;"><i class="fas fa-paw me-1"></i> My Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_orders.html" style="color: #4A628A;"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_payments.html" style="color: #4A628A;"><i class="fas fa-credit-card me-1"></i> Payments</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="client_support.html" style="color: #4A628A; font-weight: 600;"><i class="fas fa-question-circle me-1"></i> Support</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary" href="#" onclick="handleLogout()" style="color: #4A628A; border-color: #4A628A;">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <!-- Page Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 style="color: #4A628A;"><i class="fas fa-question-circle me-2"></i> Support Center</h2>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">
+                <i class="fas fa-plus-circle me-1"></i> New Support Ticket
+            </button>
+        </div>
+        
+        <!-- Support Options -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-4">
+                <div class="card support-card border-0 shadow-sm h-100" onclick="document.getElementById('faqSection').scrollIntoView({behavior: 'smooth'})">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-question-circle fa-3x" style="color: #4A628A;"></i>
+                        </div>
+                        <h5 style="color: #4A628A;">Frequently Asked Questions</h5>
+                        <p class="text-muted">Find quick answers to common questions about our services and portal.</p>
+                        <button class="btn btn-outline-primary mt-2">View FAQs</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card support-card border-0 shadow-sm h-100" onclick="document.getElementById('liveChatSection').scrollIntoView({behavior: 'smooth'})">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-comments fa-3x" style="color: #4A628A;"></i>
+                        </div>
+                        <h5 style="color: #4A628A;">Live Chat</h5>
+                        <p class="text-muted">Chat with our support team in real-time for immediate assistance.</p>
+                        <button class="btn btn-outline-primary mt-2">Start Chat</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card support-card border-0 shadow-sm h-100" onclick="document.getElementById('ticketsSection').scrollIntoView({behavior: 'smooth'})">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-ticket-alt fa-3x" style="color: #4A628A;"></i>
+                        </div>
+                        <h5 style="color: #4A628A;">Support Tickets</h5>
+                        <p class="text-muted">Submit a ticket for complex issues that require detailed assistance.</p>
+                        <button class="btn btn-outline-primary mt-2">View Tickets</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- FAQ Section -->
+        <div id="faqSection" class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-white border-0 py-3">
+                <h3 style="color: #4A628A;">Frequently Asked Questions</h3>
+            </div>
+            <div class="card-body">
+                <!-- FAQ Categories -->
+                <ul class="nav nav-pills mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">All</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Appointments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Payments</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Pet Care</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Account</a>
+                    </li>
+                </ul>
+                
+                <!-- Search Bar -->
+                <div class="input-group mb-4">
+                    <span class="input-group-text bg-white">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Search FAQs...">
+                </div>
+                
+                <!-- FAQ Items -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How do I schedule an appointment for my pet?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        <p>To schedule an appointment for your pet, follow these steps:</p>
+                        <ol>
+                            <li>Log in to your client portal account</li>
+                            <li>Click on the "Appointments" tab in the navigation menu</li>
+                            <li>Click the "Book New Appointment" button</li>
+                            <li>Select your pet, the service needed, and your preferred date and time</li>
+                            <li>Review and confirm your appointment details</li>
+                        </ol>
+                        <p>You'll receive a confirmation email once your appointment is scheduled, and you can always view or reschedule it from the Appointments section.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What payment methods do you accept?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        <p>We accept the following payment methods:</p>
+                        <ul>
+                            <li>Credit/Debit Cards (Visa, Mastercard, American Express)</li>
+                            <li>GCash</li>
+                            <li>PayMaya</li>
+                            <li>Bank Transfer</li>
+                            <li>Cash (for in-clinic payments only)</li>
+                        </ul>
+                        <p>You can manage your payment methods in the Payments section of your client portal.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How do I update my pet's information?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        <p>To update your pet's information:</p>
+                        <ol>
+                            <li>Navigate to the "My Pets" section in the client portal</li>
+                            <li>Find your pet's profile card and click on "View Details" or "Edit"</li>
+                            <li>Update the necessary information (weight, diet, medications, etc.)</li>
+                            <li>Click "Save Changes" to update your pet's profile</li>
+                        </ol>
+                        <p>Keeping your pet's information up-to-date helps our veterinarians provide the best care possible.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What should I do if I need to cancel an appointment?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        <p>If you need to cancel an appointment:</p>
+                        <ol>
+                            <li>Go to the "Appointments" section in your client portal</li>
+                            <li>Find the appointment you wish to cancel</li>
+                            <li>Click on the "Cancel" button</li>
+                            <li>Provide a reason for cancellation (optional)</li>
+                            <li>Confirm the cancellation</li>
+                        </ol>
+                        <p>Please note that we request at least 24 hours notice for cancellations. Late cancellations may incur a fee as per our cancellation policy.</p>
+                    </div>
+                </div>
+                
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How can I view my pet's medical records?</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer" style="display: none;">
+                        <p>To view your pet's medical records:</p>
+                        <ol>
+                            <li>Go to the "My Pets" section in your client portal</li>
+                            <li>Select the pet whose records you want to view</li>
+                            <li>Click on the "Medical Records" tab</li>
+                        </ol>
+                        <p>Here you'll find a complete history of your pet's visits, vaccinations, prescriptions, and treatment plans. You can also download or print these records if needed.</p>
+                    </div>
+                </div>
+                
+                <!-- Show More Button -->
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary">
+                        <i class="fas fa-plus-circle me-1"></i> Show More FAQs
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Live Chat Section -->
+        <div id="liveChatSection" class="card shadow-sm border-0 mb-5">
+            <div class="card-header bg-white border-0 py-3">
+                <h3 style="color: #4A628A;">Live Chat Support</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="card h-100">
+                            <div class="card-header bg-white">
+                                <h5 class="mb-0">Support Team</h5>
+                            </div>
+                            <div class="card-body p-0">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <div class="position-relative me-3">
+                                            <i class="fas fa-user-circle fa-2x text-success"></i>
+                                            <span class="position-absolute bottom-0 end-0 bg-success rounded-circle" style="width: 10px; height: 10px;"></span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Anna Reyes</h6>
+                                            <small class="text-muted">Customer Support</small>
+                                        </div>
+                                        <span class="badge bg-success ms-auto">Online</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <div class="position-relative me-3">
+                                            <i class="fas fa-user-circle fa-2x text-success"></i>
+                                            <span class="position-absolute bottom-0 end-0 bg-success rounded-circle" style="width: 10px; height: 10px;"></span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Marco Santos</h6>
+                                            <small class="text-muted">Vet Assistant</small>
+                                        </div>
+                                        <span class="badge bg-success ms-auto">Online</span>
+                                    </li>
+                                    <li class="list-group-item d-flex align-items-center">
+                                        <div class="position-relative me-3">
+                                            <i class="fas fa-user-circle fa-2x text-secondary"></i>
+                                            <span class="position-absolute bottom-0 end-0 bg-secondary rounded-circle" style="width: 10px; height: 10px;"></span>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0">Dr. Lim</h6>
+                                            <small class="text-muted">Veterinarian</small>
+                                        </div>
+                                        <span class="badge bg-secondary ms-auto">Away</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

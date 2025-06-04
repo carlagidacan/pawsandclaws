@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets Management | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+        <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="admin_dashboard.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div class="clinic-name">Paws & Claws<br>Admin Dashboard</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_appointments.html"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_orders.html"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_clients.html"><i class="fas fa-users me-1"></i> Clients</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_pets.html"><i class="fas fa-paw me-1"></i> Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_services.html"><i class="fas fa-clinic-medical me-1"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_products.html"><i class="fas fa-box-open me-1"></i> Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html"><i class="fas fa-cog me-1"></i> Settings</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary login" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+<!-- Sidebar -->
+<div class="col-lg-2 d-none d-lg-block sidebar">
+    <div class="list-group list-group-flush rounded-3 shadow-sm">
+        <a href="admin_dashboard.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="admin_appointments.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-calendar me-2"></i> Appointments
+        </a>
+        <a href="admin_orders.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+        <a href="admin_clients.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-users me-2"></i> Clients
+        </a>
+        <a href="admin_pets.html" class="list-group-item list-group-item-action active py-3" style="background-color: #0d6efd; color: white; border-left: 4px solid #0a58ca;">
+            <i class="fas fa-paw me-2"></i> Pets
+        </a>
+        <a href="admin_services.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-clinic-medical me-2"></i> Services
+        </a>
+        <a href="admin_products.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-box-open me-2"></i> Products
+        </a>
+        <a href="admin_settings.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+    </div>
+</div>
+            
+            <!-- Main Pets Content -->
+            <div class="col-lg-10">
+                <!-- Pets Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #4A628A;">Pets Management</h2>
+                    <div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPetModal">
+                            <i class="fas fa-plus me-1"></i> Register New Pet
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Pets Filter and Search -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                    <input type="text" class="form-control" placeholder="Search pets...">
+                                    <button class="btn btn-outline-secondary" type="button">Search</button>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select">
+                                    <option selected>Filter by Type</option>
+                                    <option>Dog</option>
+                                    <option>Cat</option>
+                                    <option>Bird</option>
+                                    <option>Rabbit</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select">
+                                    <option selected>Filter by Status</option>
+                                    <option>Active</option>
+                                    <option>Deceased</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <select class="form-select">
+                                    <option selected>Sort by</option>
+                                    <option>Recently Added</option>
+                                    <option>Name (A-Z)</option>
+                                    <option>Age</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pets Table -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" style="color: #4A628A;">All Pets</h5>
+                        <div class="text-muted">Showing 1 to 8 of 42 pets</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Pet ID</th>
+                                        <th>Name</th>
+                                        <th>Type</th>
+                                        <th>Breed</th>
+                                        <th>Age</th>
+                                        <th>Owner</th>
+                                        <th>Last Visit</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#PET-1025</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placedog.net/50/50?random=1" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Max
+                                            </div>
+                                        </td>
+                                        <td>Dog</td>
+                                        <td>Golden Retriever</td>
+                                        <td>3 years</td>
+                                        <td>Maria Santos</td>
+                                        <td>May 8, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1024</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placekitten.com/50/50?image=6" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Whiskers
+                                            </div>
+                                        </td>
+                                        <td>Cat</td>
+                                        <td>Siamese</td>
+                                        <td>2 years</td>
+                                        <td>Juan Dela Cruz</td>
+                                        <td>May 5, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1023</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placedog.net/50/50?random=2" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Buddy
+                                            </div>
+                                        </td>
+                                        <td>Dog</td>
+                                        <td>Labrador</td>
+                                        <td>5 years</td>
+                                        <td>Andrea Reyes</td>
+                                        <td>May 3, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1022</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placekitten.com/50/50?random=2" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Mochi
+                                            </div>
+                                        </td>
+                                        <td>Cat</td>
+                                        <td>Persian</td>
+                                        <td>1 year</td>
+                                        <td>Robert Lim</td>
+                                        <td>Apr 28, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1021</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placedog.net/50/50?random=3" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Luna
+                                            </div>
+                                        </td>
+                                        <td>Rabbit</td>
+                                        <td>Holland Lop</td>
+                                        <td>6 months</td>
+                                        <td>Elizabeth Tan</td>
+                                        <td>Apr 25, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1020</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placekitten.com/50/50?random=3" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Simba
+                                            </div>
+                                        </td>
+                                        <td>Cat</td>
+                                        <td>Maine Coon</td>
+                                        <td>4 years</td>
+                                        <td>Michael Sy</td>
+                                        <td>Apr 20, 2025</td>
+                                        <td><span class="badge bg-danger">Deceased</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-success" href="#"><i class="fas fa-check me-2"></i>Mark Active</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1019</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placedog.net/50/50?random=4" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Rocky
+                                            </div>
+                                        </td>
+                                        <td>Dog</td>
+                                        <td>German Shepherd</td>
+                                        <td>2 years</td>
+                                        <td>Sarah Gomez</td>
+                                        <td>Apr 15, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#PET-1018</td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <img src="https://placekitten.com/50/50?random=4" alt="Pet" class="rounded-circle me-2 pet-avatar">
+                                                Milo
+                                            </div>
+                                        </td>
+                                        <td>Cat</td>
+                                        <td>Domestic Shorthair</td>
+                                        <td>3 years</td>
+                                        <td>David Ong</td>
+                                        <td>Apr 10, 2025</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <ul class="dropdown-menu">
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-eye me-2"></i>View</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                                    <li><a class="dropdown-item" href="#"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-times me-2"></i>Mark Deceased</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center mt-4">
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                                </li>
+                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                <li class="page-item">
+                                    <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Pet Modal -->
+    <div class="modal fade" id="addPetModal" tabindex="-1" aria-labelledby="addPetModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPetModalLabel">Register New Pet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="petName" class="form-label">Pet Name</label>
+                                <input type="text" class="form-control" id="petName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petType" class="form-label">Type</label>
+                                <select class="form-select" id="petType" required>
+                                    <option value="" selected disabled>Select type</option>
+                                    <option>Dog</option>
+                                    <option>Cat</option>
+                                    <option>Bird</option>
+                                    <option>Rabbit</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petBreed" class="form-label">Breed</label>
+                                <input type="text" class="form-control" id="petBreed" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="petAge" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="petAge" min="0" max="30">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="petAgeUnit" class="form-label">Unit</label>
+                                <select class="form-select" id="petAgeUnit">
+                                    <option>Years</option>
+                                    <option>Months</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petGender" class="form-label">Gender</label>
+                                <select class="form-select" id="petGender" required>
+                                    <option value="" selected disabled>Select gender</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petColor" class="form-label">Color/Markings</label>
+                                <input type="text" class="form-control" id="petColor">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petOwner" class="form-label">Owner</label>
+                                <select class="form-select" id="petOwner" required>
+                                    <option value="" selected disabled>Select owner</option>
+                                    <option>Maria Santos</option>
+                                    <option>Juan Dela Cruz</option>
+                                    <option>Andrea Reyes</option>
+                                    <option>Robert Lim</option>
+                                    <option>Elizabeth Tan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petBirthday" class="form-label">Birthday (approx.)</label>
+                                <input type="date" class="form-control" id="petBirthday">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="petMicrochip" class="form-label">Microchip ID</label>
+                                <input type="text" class="form-control" id="petMicrochip">
+                            </div>
+                            <div class="col-12">
+                                <label for="petNotes" class="form-label">Special Notes</label>
+                                <textarea class="form-control" id="petNotes" rows="3"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Upload Photo</label>
+                                <input type="file" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Register Pet</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="admin_script.js"></script>
+    <script>
+        // Function to handle logout
+        function handleLogout() {
+            if (confirm("Are you sure you want to log out?")) {
+                // Redirect to home page after confirmation
+                window.location.href = "home.html";
+            }
+        }
+
+        // Function to fetch and display pets
+        async function loadPets() {
+            try {
+                const response = await fetch('/api/pets');
+                const pets = await response.json();
+                displayPets(pets);
+            } catch (error) {
+                console.error('Error fetching pets:', error);
+                // Fall back to sample data if API fails
+                displayPets(samplePets);
+            }
+        }
+
+        // Function to display pets in the table
+        function displayPets(pets) {
+            const petsTableBody = document.querySelector('table tbody');
+            petsTableBody.innerHTML = ''; // Clear existing rows
+            
+            // Loop through pets and create table rows
+            pets.forEach(pet => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>#${pet.id}</td>
+                    <td>${pet.name}</td>
+                    <td>${pet.type}</td>
+                    <td>${pet.breed}</td>
+                    <td>${pet.age}</td>
+                    <td>${pet.owner}</td>
+                    <td>${pet.lastVisit}</td>
+                    <td><span class="badge bg-${pet.status === 'Active' ? 'success' : 'danger'}">${pet.status}</span></td>
+                    <td>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="viewPet('${pet.id}')"><i class="fas fa-eye me-2"></i>View</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="editPet('${pet.id}')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="viewPetAppointments('${pet.id}')"><i class="fas fa-calendar me-2"></i>Appointments</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item ${pet.status === 'Active' ? 'text-danger' : 'text-success'}" href="#" onclick="togglePetStatus('${pet.id}')">
+                                    <i class="fas ${pet.status === 'Active' ? 'fa-times' : 'fa-check'} me-2"></i>
+                                    ${pet.status === 'Active' ? 'Mark Deceased' : 'Mark Active'}
+                                </a></li>
+                            </ul>
+                        </div>
+                    </td>
+                `;
+                petsTableBody.appendChild(row);
+            });
+        }
+
+        // Sample data for pets (fallback if API fails)
+        const samplePets = [
+            {
+                id: 'PET-1025',
+                name: 'Max',
+                type: 'Dog',
+                breed: 'Golden Retriever',
+                age: '3 years',
+                owner: 'Maria Santos',
+                lastVisit: 'May 8, 2025',
+                status: 'Active',
+                image: 'https://placedog.net/50/50?id=1'
+            },
+            {
+                id: 'PET-1024',
+                name: 'Whiskers',
+                type: 'Cat',
+                breed: 'Siamese',
+                age: '2 years',
+                owner: 'Juan Dela Cruz',
+                lastVisit: 'May 5, 2025',
+                status: 'Active',
+                image: 'https://placekitten.com/50/50?image=6'
+            },
+            {
+                id: 'PET-1023',
+                name: 'Buddy',
+                type: 'Dog',
+                breed: 'Labrador',
+                age: '5 years',
+                owner: 'Andrea Reyes',
+                lastVisit: 'May 3, 2025',
+                status: 'Active',
+                image: 'https://placedog.net/50/50?id=2'
+            },
+            {
+                id: 'PET-1022',
+                name: 'Mochi',
+                type: 'Cat',
+                breed: 'Persian',
+                age: '1 year',
+                owner: 'Robert Lim',
+                lastVisit: 'Apr 28, 2025',
+                status: 'Active',
+                image: 'https://placekitten.com/50/50?image=2'
+            },
+            {
+                id: 'PET-1021',
+                name: 'Luna',
+                type: 'Rabbit',
+                breed: 'Holland Lop',
+                age: '6 months',
+                owner: 'Elizabeth Tan',
+                lastVisit: 'Apr 25, 2025',
+                status: 'Active',
+                image: 'https://i.imgur.com/RlxrTvy.jpg'
+            },
+            {
+                id: 'PET-1020',
+                name: 'Simba',
+                type: 'Cat',
+                breed: 'Maine Coon',
+                age: '4 years',
+                owner: 'Michael Sy',
+                lastVisit: 'Apr 20, 2025',
+                status: 'Deceased',
+                image: 'https://placekitten.com/50/50?image=3'
+            },
+            {
+                id: 'PET-1019',
+                name: 'Rocky',
+                type: 'Dog',
+                breed: 'German Shepherd',
+                age: '2 years',
+                owner: 'Sarah Gomez',
+                lastVisit: 'Apr 15, 2025',
+                status: 'Active',
+                image: 'https://placedog.net/50/50?id=3'
+            },
+            {
+                id: 'PET-1018',
+                name: 'Milo',
+                type: 'Cat',
+                breed: 'Domestic Shorthair',
+                age: '3 years',
+                owner: 'David Ong',
+                lastVisit: 'Apr 10, 2025',
+                status: 'Active',
+                image: 'https://placekitten.com/50/50?image=4'
+            }
+        ];
+
+        // Function to toggle pet status (Active/Deceased)
+        async function togglePetStatus(petId) {
+            try {
+                const response = await fetch(`/api/pets/${petId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                if (response.ok) {
+                    // Reload pets to reflect the change
+                    loadPets();
+                }
+            } catch (error) {
+                console.error('Error updating pet status:', error);
+            }
+        }
+
+        // Function to view pet details
+        async function viewPet(petId) {
+            try {
+                const response = await fetch(`/api/pets/${petId}`);
+                const pet = await response.json();
+                
+                // You could show a modal with pet details here
+                alert(`Viewing details for ${pet.name}`);
+            } catch (error) {
+                console.error('Error fetching pet details:', error);
+            }
+        }
+
+        // Function to edit pet
+        function editPet(petId) {
+            // You could open the edit modal and populate it with pet data
+            alert(`Editing pet ${petId}`);
+        }
+
+        // Function to view pet appointments
+        function viewPetAppointments(petId) {
+            // Redirect to appointments filtered by this pet
+            window.location.href = `admin_appointments.html?pet=${petId}`;
+        }
+
+        // Add event listener for the Add New Pet form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load pets when page loads
+            loadPets();
+            
+            // Handle form submission for adding new pet
+            const addPetForm = document.querySelector('#addPetModal form');
+            if (addPetForm) {
+                addPetForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    // Get form data
+                    const formData = new FormData(addPetForm);
+                    const newPet = {
+                        name: formData.get('petName'),
+                        type: formData.get('petType'),
+                        breed: formData.get('petBreed'),
+                        age: `${formData.get('petAge')} ${formData.get('petAgeUnit')}`,
+                        owner: formData.get('petOwner'),
+                        gender: formData.get('petGender'),
+                        color: formData.get('petColor'),
+                        birthday: formData.get('petBirthday'),
+                        microchip: formData.get('petMicrochip'),
+                        notes: formData.get('petNotes'),
+                        status: 'Active',
+                        lastVisit: 'N/A',
+                        image: 'https://placedog.net/50/50?random=10' // Default image
+                    };
+                    
+                    try {
+                        const response = await fetch('/api/pets', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(newPet)
+                        });
+                        
+                        if (response.ok) {
+                            // Close modal and reload pets
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('addPetModal'));
+                            modal.hide();
+                            addPetForm.reset();
+                            loadPets();
+                        }
+                    } catch (error) {
+                        console.error('Error adding new pet:', error);
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

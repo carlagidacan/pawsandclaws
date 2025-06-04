@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Pet | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="client_style.css">
+    <style>
+        /* Navigation styles */
+        .nav-link {
+            color: #4A628A !important;
+            font-weight: 500;
+        }
+        
+        .nav-link.active {
+            font-weight: 600;
+        }
+        
+        .btn-outline-primary {
+            color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: #4A628A !important;
+            color: white !important;
+        }
+        
+        /* Other styles remain unchanged */
+        .btn-primary {
+            background-color: #4A628A !important;
+            border-color: #4A628A !important;
+        }
+        
+        h4 {
+            color: #4A628A !important;
+        }
+        
+        .pet-avatar-upload:hover {
+            border-color: #4A628A !important;
+        }
+        .pet-avatar-upload {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background-color: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            cursor: pointer;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .pet-avatar-upload:hover {
+            border-color: #4A628A;
+            background-color: #f0f7ff;
+        }
+        .pet-avatar-upload img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .pet-avatar-upload .upload-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #6c757d;
+        }
+        .pet-avatar-upload input {
+            display: none;
+        }
+        .form-section {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        .breed-suggestions {
+            position: absolute;
+            z-index: 1000;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 0.25rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            display: none;
+        }
+        .breed-suggestion-item {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+        }
+        .breed-suggestion-item:hover {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="client_home.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div>
+                    <div style="color: #4A628A; font-size: 22px; font-weight: 500; line-height: 1.2;">Paws & Claws</div>
+                    <div style="color: #000000; font-size: 18px; line-height: 1.2;">Client Portal</div>
+                </div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="client_home.html" style="color: #4A628A;"><i class="fas fa-home me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_appointments.html" style="color: #4A628A;"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="client_pets.html" style="color: #4A628A; font-weight: 600;"><i class="fas fa-paw me-1"></i> My Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_orders.html" style="color: #4A628A;"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="client_payments.html" style="color: #4A628A;"><i class="fas fa-credit-card me-1"></i> Payments</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary" href="#" onclick="handleLogout()" style="color: #4A628A; border-color: #4A628A;">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 overflow-hidden">
+                    <div class="card-header text-white py-3" style="background-color: #4A628A;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h2 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Add New Pet</h2>
+                            <a href="client_pets.html" class="btn btn-sm btn-light">
+                                <i class="fas fa-arrow-left me-1"></i> Back to My Pets
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Pet Avatar Upload -->
+                        <div class="text-center mb-4">
+                            <div class="pet-avatar-upload" onclick="document.getElementById('pet-avatar-input').click()">
+                                <img id="pet-avatar-preview" src="" alt="Pet Avatar" style="display: none;">
+                                <div class="upload-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <input type="file" id="pet-avatar-input" accept="image/*">
+                            </div>
+                            <small class="text-muted">Click to upload pet photo</small>
+                        </div>
+
+                        <!-- Basic Information Section -->
+                        <div class="form-section">
+                            <h4 class="mb-4" style="color: #4A628A;">Basic Information</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="pet-name" class="form-label">Pet Name *</label>
+                                    <input type="text" class="form-control" id="pet-name" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-type" class="form-label">Animal Type *</label>
+                                    <select class="form-select" id="pet-type" required>
+                                        <option value="" selected disabled>Select type</option>
+                                        <option value="dog">Dog</option>
+                                        <option value="cat">Cat</option>
+                                        <option value="bird">Bird</option>
+                                        <option value="rabbit">Rabbit</option>
+                                        <option value="hamster">Hamster</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-breed" class="form-label">Breed *</label>
+                                    <input type="text" class="form-control" id="pet-breed" required>
+                                    <div class="breed-suggestions" id="breed-suggestions"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-gender" class="form-label">Gender *</label>
+                                    <select class="form-select" id="pet-gender" required>
+                                        <option value="" selected disabled>Select gender</option>
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-birthdate" class="form-label">Birthdate</label>
+                                    <input type="date" class="form-control" id="pet-birthdate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-age" class="form-label">Age (if birthdate unknown)</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="pet-age" min="0" max="30">
+                                        <span class="input-group-text">years</span>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="pet-description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="pet-description" rows="2" placeholder="Color, markings, distinctive features..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Medical Information Section -->
+                        <div class="form-section">
+                            <h4 class="mb-4" style="color: #4A628A;">Medical Information</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="pet-weight" class="form-label">Weight (kg)</label>
+                                    <input type="number" class="form-control" id="pet-weight" min="0" step="0.1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-microchip" class="form-label">Microchip ID</label>
+                                    <input type="text" class="form-control" id="pet-microchip">
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="pet-spayed">
+                                        <label class="form-check-label" for="pet-spayed">
+                                            Spayed/Neutered
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Vaccination History</label>
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vaccine-rabies">
+                                                <label class="form-check-label" for="vaccine-rabies">
+                                                    Rabies
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vaccine-dhp">
+                                                <label class="form-check-label" for="vaccine-dhp">
+                                                    DHP (Distemper)
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="vaccine-bordetella">
+                                                <label class="form-check-label" for="vaccine-bordetella">
+                                                    Bordetella
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="pet-allergies" class="form-label">Allergies</label>
+                                    <textarea class="form-control" id="pet-allergies" rows="2" placeholder="List any known allergies..."></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label for="pet-conditions" class="form-label">Medical Conditions</label>
+                                    <textarea class="form-control" id="pet-conditions" rows="2" placeholder="Any existing medical conditions..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Behavioral Information Section -->
+                        <div class="form-section">
+                            <h4 class="mb-4" style="color: #4A628A;">Behavioral Information</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="pet-temperament" class="form-label">Temperament</label>
+                                    <select class="form-select" id="pet-temperament">
+                                        <option value="" selected disabled>Select temperament</option>
+                                        <option value="calm">Calm</option>
+                                        <option value="friendly">Friendly</option>
+                                        <option value="shy">Shy/Timid</option>
+                                        <option value="energetic">Energetic</option>
+                                        <option value="aggressive">Aggressive</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="pet-activity" class="form-label">Activity Level</label>
+                                    <select class="form-select" id="pet-activity">
+                                        <option value="" selected disabled>Select activity level</option>
+                                        <option value="low">Low</option>
+                                        <option value="moderate">Moderate</option>
+                                        <option value="high">High</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Behavior Notes</label>
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="behavior-good-dogs">
+                                                <label class="form-check-label" for="behavior-good-dogs">
+                                                    Good with other dogs
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="behavior-good-cats">
+                                                <label class="form-check-label" for="behavior-good-cats">
+                                                    Good with cats
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="behavior-good-kids">
+                                                <label class="form-check-label" for="behavior-good-kids">
+                                                    Good with children
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="pet-notes" class="form-label">Additional Notes</label>
+                                    <textarea class="form-control" id="pet-notes" rows="3" placeholder="Any other behavioral information that would help us care for your pet..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='client_pets.html'">
+                                <i class="fas fa-times me-2"></i> Cancel
+                            </button>
+                            <button type="submit" class="btn btn-primary" onclick="savePet()">
+                                <i class="fas fa-save me-2"></i> Save Pet
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="40" class="mb-3">
+                    <p class="text-muted">Providing compassionate care for your furry family members since 2010.</p>
+                </div>
+                <div class="col-md-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-muted">Services</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Our Team</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Online Shop</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5>Contact</h5>
+                    <ul class="list-unstyled text-muted">
+                        <li><i class="fas fa-map-marker-alt me-2"></i> 123 Pet Street, Manila</li>
+                        <li><i class="fas fa-phone me-2"></i> (02) 8123-4567</li>
+                        <li><i class="fas fa-envelope me-2"></i> info@pawsandclaws.com</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted mb-0">© 2025 Paws & Claws Vet Clinic. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <a href="#" class="text-decoration-none text-muted me-3">Privacy Policy</a>
+                    <a href="#" class="text-decoration-none text-muted">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>    <!-- Scripts -->
+    <script src="client-side-auth.js"></script>
+    <script src="client_add_pet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

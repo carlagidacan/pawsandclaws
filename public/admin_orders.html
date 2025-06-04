@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management | Paws & Claws Vet Clinic</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="admin_style.css">
+</head>
+<body>
+    <!-- Navigation -->
+        <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="admin_dashboard.html">
+                <img src="assets/images/logo.png" alt="Paws & Claws Logo" height="50" class="me-3">
+                <div class="clinic-name">Paws & Claws<br>Admin Dashboard</div>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="admin_dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_appointments.html"><i class="fas fa-calendar me-1"></i> Appointments</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="admin_orders.html"><i class="fas fa-shopping-bag me-1"></i> Orders</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_clients.html"><i class="fas fa-users me-1"></i> Clients</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_pets.html"><i class="fas fa-paw me-1"></i> Pets</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_services.html"><i class="fas fa-clinic-medical me-1"></i> Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_products.html"><i class="fas fa-box-open me-1"></i> Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin_settings.html"><i class="fas fa-cog me-1"></i> Settings</a></li>
+                    <li class="nav-item ms-lg-2">
+                        <a class="btn btn-outline-primary login" href="#" onclick="handleLogout()">
+                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+           <!-- Sidebar -->
+<div class="col-lg-2 d-none d-lg-block sidebar">
+    <div class="list-group list-group-flush rounded-3 shadow-sm">
+        <a href="admin.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+        </a>
+        <a href="admin_appointments.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-calendar me-2"></i> Appointments
+        </a>
+        <a href="admin_orders.html" class="list-group-item list-group-item-action active py-3" style="background-color: #0d6efd; color: white; border-left: 4px solid #0a58ca;">
+            <i class="fas fa-shopping-bag me-2"></i> Orders
+        </a>
+        <a href="admin_clients.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-users me-2"></i> Clients
+        </a>
+        <a href="admin_pets.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-paw me-2"></i> Pets
+        </a>
+        <a href="admin_services.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-clinic-medical me-2"></i> Services
+        </a>
+        <a href="admin_products.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-box-open me-2"></i> Products
+        </a>
+        <a href="admin_settings.html" class="list-group-item list-group-item-action py-3">
+            <i class="fas fa-cog me-2"></i> Settings
+        </a>
+    </div>
+</div>
+            
+            <!-- Orders Content -->
+            <div class="col-lg-10">
+                <!-- Page Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 style="color: #4A628A;">Orders Management</h2>
+                    <div>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newOrderModal">
+                            <i class="fas fa-plus me-1"></i> New Order
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filter and Search Bar -->
+                <div class="card shadow-sm mb-4 border-0">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label">Date Range</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" value="2025-05-01">
+                                    <span class="input-group-text">to</span>
+                                    <input type="date" class="form-control" value="2025-05-10">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                                <select class="form-select">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="shipped">Shipped</option>
+                                    <option value="delivered">Delivered</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Payment Status</label>
+                                <select class="form-select">
+                                    <option value="">All Statuses</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="failed">Failed</option>
+                                    <option value="refunded">Refunded</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Search</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Order # or customer...">
+                                    <button class="btn btn-outline-secondary" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Orders Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Today's Orders</h6>
+                                        <h3 class="mb-0">8</h3>
+                                    </div>
+                                    <div class="stat-icon bg-primary-light">
+                                        <i class="fas fa-shopping-bag text-primary"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 12%</span>
+                                    <span class="text-muted ms-2">from yesterday</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Revenue</h6>
+                                        <h3 class="mb-0">₱15,250</h3>
+                                    </div>
+                                    <div class="stat-icon bg-secondary-light">
+                                        <i class="fas fa-peso-sign text-secondary"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 8%</span>
+                                    <span class="text-muted ms-2">from last week</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Pending Orders</h6>
+                                        <h3 class="mb-0">5</h3>
+                                    </div>
+                                    <div class="stat-icon bg-warning-light">
+                                        <i class="fas fa-clock text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-danger"><i class="fas fa-arrow-down me-1"></i> 2</span>
+                                    <span class="text-muted ms-2">since yesterday</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-3">
+                        <div class="card stat-card shadow-sm border-0">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="text-muted mb-2">Avg. Order Value</h6>
+                                        <h3 class="mb-0">₱1,906</h3>
+                                    </div>
+                                    <div class="stat-icon bg-info-light">
+                                        <i class="fas fa-chart-line text-info"></i>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <span class="text-success"><i class="fas fa-arrow-up me-1"></i> 5%</span>
+                                    <span class="text-muted ms-2">from last month</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Orders Table -->
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" style="color: #4A628A;">Recent Orders</h5>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary active">Today</button>
+                            <button type="button" class="btn btn-outline-secondary">This Week</button>
+                            <button type="button" class="btn btn-outline-secondary">This Month</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Order #</th>
+                                        <th>Date</th>
+                                        <th>Customer</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Payment</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTableBody">
+                                    <!-- Order rows will be inserted here by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- New Order Modal -->
+    <div class="modal fade" id="newOrderModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary">Create New Order</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Customer</label>
+                                <select class="form-select">
+                                    <option selected disabled>Select customer</option>
+                                    <option>Maria Santos</option>
+                                    <option>Juan Dela Cruz</option>
+                                    <option>Andrea Reyes</option>
+                                    <option>Robert Lim</option>
+                                    <option>Elizabeth Tan</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Order Date</label>
+                                <input type="date" class="form-control" value="2025-05-10">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Products</label>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                                <th>Total</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <select class="form-select form-select-sm">
+                                                        <option selected disabled>Select product</option>
+                                                        <option>Dog Food (Premium)</option>
+                                                        <option>Cat Food (Standard)</option>
+                                                        <option>Rabbit Pellets</option>
+                                                        <option>Flea & Tick Treatment</option>
+                                                        <option>Chew Toys</option>
+                                                    </select>
+                                                </td>
+                                                <td><input type="text" class="form-control form-control-sm" placeholder="₱0.00"></td>
+                                                <td><input type="number" class="form-control form-control-sm" value="1" min="1"></td>
+                                                <td>₱0.00</td>
+                                                <td><button type="button" class="btn btn-sm btn-outline-danger"><i class="fas fa-times"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan="4" class="text-end">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary">
+                                                        <i class="fas fa-plus me-1"></i> Add Product
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Shipping Method</label>
+                                <select class="form-select">
+                                    <option selected disabled>Select method</option>
+                                    <option>Pickup</option>
+                                    <option>Standard Shipping</option>
+                                    <option>Express Shipping</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-select">
+                                    <option selected disabled>Select method</option>
+                                    <option>Cash on Delivery</option>
+                                    <option>Credit Card</option>
+                                    <option>GCash</option>
+                                    <option>Bank Transfer</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label">Notes</label>
+                                <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary">Create Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal fade" id="orderDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary">Order Details #PC-10025</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Customer Information</h6>
+                            <p class="mb-1"><strong>Maria Santos</strong></p>
+                            <p class="mb-1">msantos@example.com</p>
+                            <p class="mb-1">0917-123-4567</p>
+                            <p>123 Valencia St, Quezon City</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-muted">Order Information</h6>
+                            <p class="mb-1"><strong>Date:</strong> May 10, 2025</p>
+                            <p class="mb-1"><strong>Status:</strong> <span class="badge bg-info">Processing</span></p>
+                            <p class="mb-1"><strong>Payment:</strong> <span class="badge bg-success">Paid</span></p>
+                            <p><strong>Shipping:</strong> Standard Shipping</p>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Premium Dog Food (10kg)</td>
+                                    <td>₱1,000</td>
+                                    <td>1</td>
+                                    <td>₱1,000</td>
+                                </tr>
+                                <tr>
+                                    <td>Chew Toy Set</td>
+                                    <td>₱250</td>
+                                    <td>1</td>
+                                    <td>₱250</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Subtotal</strong></td>
+                                    <td>₱1,250</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Shipping</strong></td>
+                                    <td>₱0</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3" class="text-end"><strong>Total</strong></td>
+                                    <td>₱1,250</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">Order Notes</h6>
+                        </div>
+                        <div class="card-body">
+                            <p>Please include the latest dental chew sample in the package.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Print Invoice</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="admin_script.js"></script>
+</body>
+</html>
+
+<script>
+    // Function to fetch and display orders
+    async function loadOrders() {
+        try {
+            const response = await fetch('/api/orders');
+            const orders = await response.json();
+            displayOrders(orders);
+        } catch (error) {
+            console.error('Error fetching orders:', error);
+            // Fall back to sample data if API fails
+            displayOrders(sampleOrders);
+        }
+    }
+
+    // Function to display orders in the table
+    function displayOrders(orders) {
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        ordersTableBody.innerHTML = ''; // Clear existing rows
+        
+        // Loop through orders and create table rows
+        orders.forEach(order => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="fw-bold">#${order.orderNumber}</td>
+                <td>${order.date}</td>
+                <td>${order.customer}</td>
+                <td>
+                    <span class="badge bg-light text-dark">${order.items}</span>
+                </td>
+                <td>${order.total}</td>
+                <td><span class="badge bg-${
+                    order.payment === 'Paid' ? 'success' : 
+                    order.payment === 'Pending' ? 'warning' : 
+                    order.payment === 'Failed' ? 'danger' : 
+                    order.payment === 'Refunded' ? 'info' : 'secondary'
+                }">${order.payment}</span></td>
+                <td><span class="badge bg-${
+                    order.status === 'Shipped' || order.status === 'Delivered' ? 'success' : 
+                    order.status === 'Pending' ? 'warning' : 
+                    order.status === 'Processing' ? 'info' : 
+                    order.status === 'Cancelled' ? 'danger' : 'secondary'
+                }">${order.status}</span></td>
+                <td>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#orderDetailModal" onclick="viewOrderDetails('${order.orderNumber}')"><i class="fas fa-eye me-2"></i>View Details</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="editOrder('${order.orderNumber}')"><i class="fas fa-edit me-2"></i>Edit</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="updateShipping('${order.orderNumber}')"><i class="fas fa-truck me-2"></i>Update Shipping</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="generateInvoice('${order.orderNumber}')"><i class="fas fa-receipt me-2"></i>Invoice</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="#" onclick="cancelOrder('${order.orderNumber}')"><i class="fas fa-trash me-2"></i>Cancel Order</a></li>
+                        </ul>
+                    </div>
+                </td>
+            `;
+            ordersTableBody.appendChild(row);
+        });
+    }
+
+    // Sample data for orders (fallback if API fails)
+    const sampleOrders = [
+        {
+            orderNumber: 'PC-10025',
+            date: 'May 10, 2025',
+            customer: 'Maria Santos',
+            items: 2,
+            total: '₱1,250',
+            payment: 'Paid',
+            status: 'Shipped'
+        },
+        {
+            orderNumber: 'PC-10024',
+            date: 'May 9, 2025',
+            customer: 'Juan Dela Cruz',
+            items: 1,
+            total: '₱2,450',
+            payment: 'Pending',
+            status: 'Processing'
+        },
+        {
+            orderNumber: 'PC-10023',
+            date: 'May 8, 2025',
+            customer: 'Andrea Reyes',
+            items: 3,
+            total: '₱3,750',
+            payment: 'Paid',
+            status: 'Pending'
+        },
+        {
+            orderNumber: 'PC-10022',
+            date: 'May 7, 2025',
+            customer: 'Robert Lim',
+            items: 1,
+            total: '₱1,890',
+            payment: 'Paid',
+            status: 'Delivered'
+        },
+        {
+            orderNumber: 'PC-10021',
+            date: 'May 6, 2025',
+            customer: 'Elizabeth Tan',
+            items: 2,
+            total: '₱2,150',
+            payment: 'Refunded',
+            status: 'Cancelled'
+        }
+    ];
+
+    // Function to view order details
+    async function viewOrderDetails(orderNumber) {
+        try {
+            const response = await fetch(`/api/orders/${orderNumber}`);
+            const order = await response.json();
+            
+            // Update the modal title
+            const modalTitle = document.querySelector('#orderDetailModal .modal-title');
+            if (modalTitle) {
+                modalTitle.textContent = `Order Details - #${orderNumber}`;
+            }
+            
+            // Update customer information
+            const customerInfo = document.querySelector('#orderDetailModal .modal-body .row:first-child .col-md-6:first-child');
+            if (customerInfo) {
+                customerInfo.innerHTML = `
+                    <h6 class="text-muted">Customer Information</h6>
+                    <p class="mb-1"><strong>${order.customer}</strong></p>
+                    <p class="mb-1">customer@example.com</p>
+                    <p class="mb-1">0917-123-4567</p>
+                    <p>${order.address || '123 Valencia St, Quezon City'}</p>
+                `;
+            }
+            
+            // Update order information
+            const orderInfo = document.querySelector('#orderDetailModal .modal-body .row:first-child .col-md-6:last-child');
+            if (orderInfo) {
+                orderInfo.innerHTML = `
+                    <h6 class="text-muted">Order Information</h6>
+                    <p class="mb-1"><strong>Date:</strong> ${order.date}</p>
+                    <p class="mb-1"><strong>Status:</strong> <span class="badge bg-${
+                        order.status === 'Shipped' || order.status === 'Delivered' ? 'success' : 
+                        order.status === 'Pending' ? 'warning' : 
+                        order.status === 'Processing' ? 'info' : 
+                        order.status === 'Cancelled' ? 'danger' : 'secondary'
+                    }">${order.status}</span></p>
+                    <p class="mb-1"><strong>Payment:</strong> <span class="badge bg-${
+                        order.payment === 'Paid' ? 'success' : 
+                        order.payment === 'Pending' ? 'warning' : 
+                        order.payment === 'Failed' ? 'danger' : 
+                        order.payment === 'Refunded' ? 'info' : 'secondary'
+                    }">${order.payment}</span></p>
+                    <p><strong>Shipping:</strong> ${order.shipping || 'Standard Shipping'}</p>
+                `;
+            }
+            
+            // Update order items
+            const orderItems = document.querySelector('#orderDetailModal .modal-body .table tbody');
+            if (orderItems) {
+                orderItems.innerHTML = '';
+                
+                // Check if we have products array
+                if (order.products && order.products.length > 0) {
+                    order.products.forEach((product, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${index + 1}</td>
+                            <td>${product.name}</td>
+                            <td>${product.quantity}</td>
+                            <td>${product.price}</td>
+                        `;
+                        orderItems.appendChild(row);
+                    });
+                } else {
+                    // Fallback to a generic item
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>1</td>
+                        <td>Order Item</td>
+                        <td>${order.items}</td>
+                        <td>${order.total}</td>
+                    `;
+                    orderItems.appendChild(row);
+                }
+            }
+            
+            // Update order notes if available
+            const notesSection = document.querySelector('#orderDetailModal .card-body');
+            if (notesSection) {
+                notesSection.innerHTML = order.notes || 'No notes provided for this order.';
+            }
+            
+        } catch (error) {
+            console.error('Error fetching order details:', error);
+            alert('Failed to load order details. Please try again.');
+        }
+    }
+
+    // Function to cancel order
+    async function cancelOrder(orderNumber) {
+        if (confirm(`Are you sure you want to cancel order #${orderNumber}?`)) {
+            try {
+                const response = await fetch(`/api/orders/${orderNumber}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'Cancelled' })
+                });
+                
+                if (response.ok) {
+                    // Reload orders to reflect the change
+                    loadOrders();
+                }
+            } catch (error) {
+                console.error('Error cancelling order:', error);
+            }
+        }
+    }
+
+    // Function to edit order
+    function editOrder(orderNumber) {
+        // You could open the edit modal and populate it with order data
+        alert(`Editing order ${orderNumber}`);
+    }
+
+    // Function to update shipping
+    function updateShipping(orderNumber) {
+        // You could open a shipping update modal
+        alert(`Updating shipping for order ${orderNumber}`);
+    }
+
+    // Function to generate invoice
+    function generateInvoice(orderNumber) {
+        // You could generate and display an invoice
+        alert(`Generating invoice for order ${orderNumber}`);
+    }
+
+    // Add event listener for when the DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load orders when page loads
+        loadOrders();
+    });
+
+    // Function to handle logout
+    function handleLogout() {
+        if (confirm("Are you sure you want to log out?")) {
+            // Redirect to home page after confirmation
+            window.location.href = "home.html";
+        }
+    }
+</script>
