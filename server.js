@@ -14,6 +14,16 @@ app.use(cors());  // Allow all origins for development
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ 
+    success: false, 
+    message: 'A server error occurred',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
+  });
+});
+
 // API Routes must come before static files
 app.use('/api/auth', authRoutes);
 app.use('/api/pets', petRoutes);

@@ -16,32 +16,28 @@
       "dest": "server.js"
     },
     {
-      "src": "/",
-      "dest": "public/home.html"
+      "src": "^/$",
+      "dest": "/public/home.html"
     },
     {
       "src": "/admin/(.*)",
-      "dest": "public/admin_$1"
+      "dest": "/public/admin_$1"
     },
     {
       "src": "/client/(.*)",
-      "dest": "public/client_$1"
+      "dest": "/public/client_$1"
     },
     {
       "src": "/(.*)\\.js",
-      "dest": "public/$1.js"
+      "dest": "/public/$1.js"
     },
     {
       "src": "/(.*)\\.css",
-      "dest": "public/$1.css"
+      "dest": "/public/$1.css"
     },
     {
       "src": "/(.*)",
-      "dest": "public/$1"
-    },
-    {
-      "src": "/(.+)",
-      "dest": "public/$1"
+      "dest": "/public/$1"
     }
   ]
 }
