@@ -1,9 +1,16 @@
 // Fetch and process dashboard data
 async function fetchDashboardData() {
     try {
-        // Fetch appointments and orders in parallel
+        // Fetch appointments with proper headers
         const [appointmentsResponse, ordersResponse] = await Promise.all([
-            fetch('/api/appointments'),
+            fetch('/api/appointments/all', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            }),
             fetch('/api/orders/recent')
         ]);
 
@@ -11,23 +18,22 @@ async function fetchDashboardData() {
             throw new Error('One or more network responses were not ok');
         }
 
-        const appointments = await appointmentsResponse.json();
+        const appointmentsData = await appointmentsResponse.json();
         const orders = await ordersResponse.json();
 
-        console.log('Appointments:', appointments); // Debug log
-        console.log('Orders:', orders); // Debug log
-
-        // Calculate dashboard statistics
-        const stats = calculateDashboardStats(appointments, orders);
+        // Extract appointments array from response
+        const appointments = Array.isArray(appointmentsData) ? appointmentsData : (appointmentsData.appointments || []);
         
-        // Update UI
-        updateDashboardStats(stats);
+        console.log('Fetched appointments:', appointments);
+        console.log('Orders:', orders);
+
+        // Update UI with appointment data
+        updateDashboardStats(calculateDashboardStats(appointments, orders));
         displayUpcomingAppointments(appointments);
         displayRecentOrders(orders);
     } catch (error) {
         console.error('Error:', error);
         showError('Failed to load dashboard data');
-        // Set empty data in case of error
         updateDashboardStats({});
         displayUpcomingAppointments([]);
         displayRecentOrders([]);
@@ -79,15 +85,38 @@ function displayUpcomingAppointments(appointments) {
         return;
     }
 
-    tbody.innerHTML = appointments.map(appt => `
-        <tr>
-            <td>${appt.time}</td>
-            <td>${appt.client}</td>
-            <td>${appt.pet}</td>
-            <td>${appt.service}</td>
-            <td><span class="badge bg-${getStatusBadgeClass(appt.status)}">${appt.status}</span></td>
-        </tr>
-    `).join('');
+    tbody.innerHTML = appointments.map(appt => {
+        // Keep original client and pet data
+        const clientName = appt.client;
+        const petInfo = appt.pet;
+
+        // Parse the datetime
+        let timeString = 'No time set';
+        if (appt.dateTime) {
+            try {
+                const datetime = new Date(appt.dateTime);
+                if (!isNaN(datetime)) {
+                    timeString = datetime.toLocaleTimeString('en-US', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        hour12: true
+                    });
+                }
+            } catch (e) {
+                console.error('Error parsing date:', e);
+            }
+        }
+
+        return `
+            <tr>
+                <td>${timeString}</td>
+                <td>${clientName || 'Unknown Client'}</td>
+                <td>${petInfo || 'Unknown Pet'}</td>
+                <td>${appt.service || 'Not specified'}</td>
+                <td><span class="badge ${appt.status === 'pending' ? 'bg-warning text-dark' : `bg-${getStatusBadgeClass(appt.status)}`}">${appt.status || 'pending'}</span></td>
+            </tr>
+        `;
+    }).join('');
 }
 
 function displayRecentOrders(orders) {
@@ -115,11 +144,12 @@ function formatTime(time) {
 }
 
 function getStatusBadgeClass(status) {
-    switch(status?.toLowerCase()) {
-        case 'confirmed': return 'bg-success';
-        case 'pending': return 'bg-warning';
-        case 'cancelled': return 'bg-danger';
-        default: return 'bg-secondary';
+    switch(status) {
+        case 'confirmed': return 'success';
+        case 'completed': return 'info';
+        case 'cancelled': return 'danger';
+        case 'pending': return 'warning';
+        default: return 'secondary';
     }
 }
 

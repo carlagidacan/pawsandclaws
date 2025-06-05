@@ -219,9 +219,8 @@ async function loadUpcomingAppointments() {
                               style="height: 24px; padding: 0 10px;">
                             ${apt.status.charAt(0).toUpperCase() + apt.status.slice(1)}
                         </span>
-                    </div>
-                    <div class="mt-2">
-                        <small><i class="fas fa-paw me-1"></i> ${apt.pet}</small>
+                    </div>                    <div class="mt-2">
+                        <small><i class="fas fa-paw me-1"></i> ${apt.pet?.name ? `${apt.pet.name} (${apt.pet.type})` : 'Not specified'}</small>
                     </div>
                 </div>`;
         }).join('');

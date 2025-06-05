@@ -27,7 +27,7 @@ app.use('/api/dashboard', require('./routes/dashboard'));
 connectDB();
 
 // Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static('public'));
 
 // API documentation route
 app.get('/api', (req, res) => {
@@ -41,19 +41,15 @@ app.get('/api', (req, res) => {
     });
 });
 
-// Catch-all route to serve index.html
+// Catch-all route to serve index.html for client-side routing
 app.get('*', (req, res) => {
-    // Don't serve HTML for API routes
-    if (req.path.startsWith('/api')) {
-        return res.status(404).json({ message: 'API endpoint not found' });
-    }
-    res.sendFile(path.join(__dirname, 'public', 'client_home.html'));
+  res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
 mongoose.connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
+   useNewUrlParser: true,
+   useUnifiedTopology: true
 });

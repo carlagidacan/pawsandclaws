@@ -1,6 +1,3 @@
-let currentDate = new Date();
-window.appointments = [];
-
 async function fetchAppointments() {
     const tbody = document.getElementById('appointmentsTableBody');
     if (tbody) {
@@ -16,66 +13,54 @@ async function fetchAppointments() {
     }
 
     try {
-        const response = await fetch('/api/appointments', {
+        const response = await fetch('/api/appointments/all', {
             method: 'GET',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include' // Include cookies if using session authentication
+                'Accept': 'application/json'
+            }
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         const data = await response.json();
-        console.log('Fetched appointments:', data); // Debug log
+        console.log('Fetched appointments:', data);
+
         window.appointments = Array.isArray(data) ? data : (data.appointments || []);
         displayAppointments(window.appointments);
-        updateCalendarView(window.appointments);
-
     } catch (error) {
         console.error('Failed to fetch appointments:', error);
         showError('Failed to load appointments. Please try again later.');
-        displayAppointments([]); // Show empty state
-        updateCalendarView([]);
+        displayAppointments([]);
     }
 }
 
 function displayAppointments(appointments) {
     const tbody = document.getElementById('appointmentsTableBody');
-    if (!tbody) {
-        console.error('Table body element not found');
-        return;
-    }
+    if (!tbody) return;
 
-    // Clear loading spinner if it exists
     tbody.innerHTML = '';
 
     if (!appointments || appointments.length === 0) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="7" class="text-center">
-                    <i class="fas fa-folder-open me-2"></i>No appointments found
-                </td>
-            </tr>`;
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center">No appointments found</td></tr>';
         return;
     }
 
     tbody.innerHTML = appointments.map(apt => {
-        const date = new Date(apt.dateTime);
+        console.log('Processing appointment:', apt);
+
+        const clientName = apt.client;
+        const petName = apt.pet;
+
         return `
             <tr>
                 <td>
-                    <div class="fw-bold">${formatDate(date)}</div>
-                    <div class="text-muted">${formatTime(date)}</div>
+                    <div class="fw-bold">${apt.dateTime ? new Date(apt.dateTime).toLocaleDateString() : 'Date not specified'}</div>
+                    <div class="text-muted">${apt.dateTime ? new Date(apt.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Time not specified'}</div>
                 </td>
-                <td>${apt.client?.firstName || ''} ${apt.client?.lastName || ''}</td>
-                <td>${apt.pet?.name || 'Unknown'} (${apt.pet?.type || 'Pet'})</td>
-                <td>${apt.service}</td>
-                <td>${apt.veterinarian || 'Not assigned'}</td>
-                <td><span class="badge ${getStatusBadgeClass(apt.status)}">${apt.status}</span></td>
+                <td>${clientName}</td>
+                <td>${petName}</td>
+                <td>${apt.service || 'N/A'}</td>
+                <td><span class="badge ${getStatusBadgeClass(apt.status)}">${apt.status || 'pending'}</span></td>
                 <td>
                     <div class="dropdown">
                         <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
@@ -99,11 +84,12 @@ function displayAppointments(appointments) {
 }
 
 function formatDate(date) {
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
-}
-
-function formatTime(date) {
-    return date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
 }
 
 function getStatusBadgeClass(status) {
@@ -117,17 +103,32 @@ function getStatusBadgeClass(status) {
 }
 
 function updateStatus(appointmentId, newStatus) {
-    fetch(`/api/appointments/${appointmentId}/status`, {
+    if (!appointmentId) {
+        console.error('No appointment ID provided');
+        return;
+    }
+
+    // Update the API endpoint to match your backend route
+    fetch(`/api/appointments/update-status/${appointmentId}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus })
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({ 
+            status: newStatus,
+            appointmentId: appointmentId 
+        })
     })
-    .then(res => res.json())
+    .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+    })
     .then(data => {
         if (data.success) {
-            location.reload();
+            fetchAppointments();
         } else {
-            showError('Failed to update appointment status');
+            showError(data.message || 'Failed to update appointment status');
         }
     })
     .catch(err => {
@@ -137,15 +138,23 @@ function updateStatus(appointmentId, newStatus) {
 }
 
 function deleteAppointment(id) {
-    if (!confirm('Are you sure you want to delete this appointment?')) return;
+    if (!id || !confirm('Are you sure you want to delete this appointment?')) return;
 
-    fetch(`/api/appointments/${id}`, { method: 'DELETE' })
-    .then(res => res.json())
+    fetch(`/api/appointments/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
+    })
     .then(data => {
         if (data.success) {
-            location.reload();
+            fetchAppointments(); // Refresh the list instead of full page reload
         } else {
-            showError('Failed to delete appointment');
+            showError(data.message || 'Failed to delete appointment');
         }
     })
     .catch(err => {
@@ -164,120 +173,122 @@ function showError(message) {
     document.querySelector('.container-fluid').insertBefore(alertDiv, document.querySelector('.container-fluid').firstChild);
 }
 
-function updateCalendarView(appointments) {
-    const tbody = document.querySelector('.table-bordered tbody');
-    if (!tbody) return;
-
-    // Clear existing content
-    tbody.innerHTML = '';
-
-    // Group appointments by veterinarian
-    const appointmentsByVet = {};
-    appointments.forEach(apt => {
-        const vet = apt.veterinarian || 'Not Assigned';
-        if (!appointmentsByVet[vet]) {
-            appointmentsByVet[vet] = [];
-        }
-        appointmentsByVet[vet].push(apt);
-    });
-
-    // Create rows for each veterinarian
-    Object.keys(appointmentsByVet).forEach(vet => {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td class="fw-bold">${vet}</td>` + generateTimeSlots(appointmentsByVet[vet]);
-        tbody.appendChild(row);
-    });
-}
-
-function generateTimeSlots(vetAppointments) {
-    const timeSlots = ['9:00', '10:00', '11:00', '12:00', '13:00', '14:00'];
-    
-    return timeSlots.map(time => {
-        const appointment = vetAppointments.find(apt => {
-            const aptTime = new Date(apt.dateTime).toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit', 
-                hour12: false 
-            });
-            return aptTime.startsWith(time);
-        });
-
-        if (appointment) {
-            return `
-                <td>
-                    <div class="appointment-slot ${appointment.status.toLowerCase()}">
-                        <strong>${appointment.pet?.name} (${appointment.pet?.type})</strong>
-                        <div>${appointment.service}</div>
-                        <small>${appointment.client?.firstName} ${appointment.client?.lastName}</small>
-                    </div>
-                </td>`;
-        }
-
-        return '<td></td>';
-    }).join('');
-}
-
 document.addEventListener('DOMContentLoaded', () => {
-    // Fetch real appointments data
     fetchAppointments();
-
-    // Add filter handlers
-    const statusFilter = document.querySelector('#statusFilter');
-    const dateFilter = document.querySelector('#dateFilter');
-    const vetFilter = document.querySelector('#vetFilter');
-    const searchInput = document.querySelector('#searchInput');
-
-    if (statusFilter) {
-        statusFilter.addEventListener('change', filterAppointments);
-    }
-
-    if (dateFilter) {
-        dateFilter.addEventListener('change', filterAppointments);
-    }
-
-    if (vetFilter) {
-        vetFilter.addEventListener('change', filterAppointments);
-    }
-
-    if (searchInput) {
-        searchInput.addEventListener('input', filterAppointments);
-    }
+    setupNewAppointmentModal();
 });
 
-function filterAppointments() {
-    if (!window.appointments) return;
+async function setupNewAppointmentModal() {
+    const modal = document.getElementById('newAppointmentModal');
+    if (!modal) return;
 
-    let filtered = [...window.appointments];
+    modal.addEventListener('show.bs.modal', async () => {
+        await populateClients();
+    });
 
-    // Apply status filter
-    const status = document.querySelector('#statusFilter').value;
-    if (status) {
-        filtered = filtered.filter(apt => apt.status.toLowerCase() === status.toLowerCase());
+    // Add client change handler to load their pets
+    document.getElementById('clientSelect')?.addEventListener('change', function() {
+        populatePets(this.value);
+    });
+}
+
+async function populateClients() {
+    try {
+        const response = await fetch('/api/appointments/get-clients', {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch clients');
+        }
+
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Failed to load clients');
+        }
+        
+        const select = document.getElementById('clientSelect');
+        select.innerHTML = '<option value="" selected disabled>Select client</option>';
+        
+        data.clients.forEach(client => {
+            select.innerHTML += `<option value="${client._id}">${client.firstName} ${client.lastName}</option>`;
+        });
+    } catch (error) {
+        console.error('Error loading clients:', error);
+        showError('Failed to load clients');
+    }
+}
+
+async function populatePets(clientId) {
+    try {
+        const response = await fetch(`/api/appointments/get-pets/${clientId}`, {
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch pets');
+        }
+
+        const data = await response.json();
+        console.log('Pets data received:', data); // Debug log
+
+        const select = document.getElementById('petSelect');
+        select.innerHTML = '<option value="" selected disabled>Select pet</option>';
+        
+        if (data.success && data.pets) {
+            data.pets.forEach(pet => {
+                select.innerHTML += `<option value="${pet._id}">${pet.name} (${pet.type})</option>`;
+            });
+        }
+    } catch (error) {
+        console.error('Error loading pets:', error);
+        showError('Failed to load pets');
+    }
+}
+
+async function createAppointment() {
+    const form = document.getElementById('newAppointmentForm');
+    if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
     }
 
-    // Apply date filter
-    const date = document.querySelector('#dateFilter').value;
-    if (date) {
-        filtered = filtered.filter(apt => apt.dateTime.startsWith(date));
-    }
+    const appointmentData = {
+        dateTime: `${document.getElementById('appointmentDate').value}T${document.getElementById('appointmentTime').value}`,
+        client: document.getElementById('clientSelect').value,
+        pet: document.getElementById('petSelect').value,
+        service: document.getElementById('serviceSelect').value,
+        status: 'pending',
+        notes: document.getElementById('appointmentNotes').value || ''
+    };
 
-    // Apply vet filter
-    const vet = document.querySelector('#vetFilter').value;
-    if (vet) {
-        filtered = filtered.filter(apt => apt.veterinarian === vet);
-    }
+    try {
+        const response = await fetch('/api/appointments/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(appointmentData)
+        });
 
-    // Apply search filter
-    const search = document.querySelector('#searchInput').value.toLowerCase();
-    if (search) {
-        filtered = filtered.filter(apt => 
-            apt.client?.firstName?.toLowerCase().includes(search) ||
-            apt.client?.lastName?.toLowerCase().includes(search) ||
-            apt.pet?.name?.toLowerCase().includes(search) ||
-            apt.service?.toLowerCase().includes(search)
-        );
-    }
+        const result = await response.json();
+        
+        if (!result.success) {
+            throw new Error(result.message || 'Failed to create appointment');
+        }
 
-    displayAppointments(filtered);
-    updateCalendarView(filtered);
+        const modal = bootstrap.Modal.getInstance(document.getElementById('newAppointmentModal'));
+        modal.hide();
+        form.reset();
+        fetchAppointments();
+        showSuccess('Appointment created successfully');
+    } catch (error) {
+        console.error('Error creating appointment:', error);
+        showError(error.message || 'Failed to create appointment');
+    }
 }

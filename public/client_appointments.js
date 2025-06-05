@@ -52,20 +52,15 @@ function renderAppointments(appointments) {
         const formattedTime = date.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit'
-        });
-
-        // Safely access nested objects
-        const petName = appt.pet?.name || 'Not specified';
-        const petType = appt.pet?.type || 'Pet';
-        const vetName = appt.veterinarian?.name || 'Not assigned';
+        });        // Handle pet info
+        const petInfo = appt.pet ? `${appt.pet.name} (${appt.pet.type})` : 'Not specified';
 
         card.innerHTML = `
             <div class="card shadow-sm appointment-card">
                 <div class="card-body">
                     <h5>${formattedDate} @ ${formattedTime}</h5>
-                    <p><strong>Pet:</strong> ${petName} (${petType})</p>
+                    <p><strong>Pet:</strong> ${petInfo}</p>
                     <p><strong>Service:</strong> ${appt.service || 'Not specified'}</p>
-                    <p><strong>Veterinarian:</strong> ${vetName}</p>
                     <p><strong>Status:</strong> <span class="badge bg-${getStatusColor(appt.status)}">${appt.status}</span></p>
                     <p><strong>Notes:</strong> ${appt.notes || '-'}</p>
                 </div>
@@ -175,14 +170,13 @@ function showDailyAppointments(dateStr) {
     if (dailyAppointments.length === 0) {
         dailyContainer.innerHTML = '<p class="text-muted text-center">No appointments for this date.</p>';
         return;
-    }
-
-    dailyContainer.innerHTML = dailyAppointments.map(appt => {
+    }    dailyContainer.innerHTML = dailyAppointments.map(appt => {
         const time = new Date(appt.dateTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const petInfo = appt.pet ? `${appt.pet.name} (${appt.pet.type})` : 'Not specified';
         return `
             <div class="mb-3 border rounded p-2 shadow-sm">
                 <p><strong>Time:</strong> ${time}</p>
-                <p><strong>Pet:</strong> ${appt.pet}</p>
+                <p><strong>Pet:</strong> ${petInfo}</p>
                 <p><strong>Service:</strong> ${appt.service}</p>
                 <p><strong>Status:</strong> ${appt.status}</p>
                 <p><strong>Notes:</strong> ${appt.notes || '-'}</p>

@@ -5,6 +5,19 @@ let selectedTime = null;
 let selectedService = null;
 let currentUser = null;  // Add this line
 
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'client_login.html';
+        return;
+    }
+
+    loadUserPets();
+    loadServices();
+    initializeDatePicker();
+});
+
 // Service definitions matching the backend
 const services = {
     checkup: { id: 'checkup', name: 'General Checkup', duration: 30, price: 50, icon: 'stethoscope', description: 'Comprehensive physical examination' },
@@ -86,25 +99,39 @@ function displayPets(pets) {
 
 // Function to select a pet
 function selectPet(petId) {
+    console.log('Selecting pet:', petId);
     // Remove selected class from all cards
     document.querySelectorAll('.pet-selector-card').forEach(card => {
         card.classList.remove('selected');
+        card.style.borderColor = '';
+        card.style.transform = 'scale(1)';
     });
 
     // Add selected class to clicked card
     const selectedCard = document.querySelector(`.pet-selector-card[data-pet-id="${petId}"]`);
     if (selectedCard) {
         selectedCard.classList.add('selected');
+        selectedCard.style.borderColor = '#4A628A';
         selectedPet = petId;
+        console.log('Pet selected:', selectedPet);
 
         // Add animation
         selectedCard.style.transform = 'scale(1.02)';
         setTimeout(() => {
             selectedCard.style.transform = 'scale(1)';
         }, 200);
+
+        // Enable the next button
+        const nextBtn = document.getElementById('step1Next');
+        if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.style.backgroundColor = '#4A628A';
+            nextBtn.style.borderColor = '#4A628A';
+            nextBtn.style.cursor = 'pointer';
+        }
     }
 
-    // Enable next button if a pet is selected
+    // Update button state
     updateNextButtonState();
 }
 
@@ -182,9 +209,19 @@ function selectService(serviceId) {
             selectedCard.style.transform = 'scale(1)';
         }, 200);
 
-        // Immediately update button state
-        const isValid = updateNextButtonState();
-        console.log('Button update result:', isValid);
+        // Enable the next button directly
+        const nextBtn = document.getElementById('step2Next');
+        if (nextBtn) {
+            nextBtn.disabled = false;
+            nextBtn.classList.remove('disabled');
+            nextBtn.classList.add('btn-primary');
+            nextBtn.style.backgroundColor = '#4A628A';
+            nextBtn.style.borderColor = '#4A628A';
+            nextBtn.style.cursor = 'pointer';
+        }
+
+        // Also update button state through the standard function
+        updateNextButtonState();
     } else {
         console.error('Could not find card for service:', serviceId);
     }
@@ -340,11 +377,13 @@ async function loadTimeSlots(date) {
 
 // Function to select time slot
 function selectTimeSlot(time) {
+    console.log('Selecting time slot:', time);
     // Remove selected class from all time slots
     document.querySelectorAll('.time-slot').forEach(slot => {
         slot.classList.remove('selected');
         slot.style.backgroundColor = '';
         slot.style.color = '';
+        slot.style.transform = 'scale(1)';
     });
 
     // Add selected class to clicked time slot
@@ -361,11 +400,22 @@ function selectTimeSlot(time) {
             setTimeout(() => {
                 slot.style.transform = 'scale(1)';
             }, 200);
+
+            // Enable the next button directly
+            const nextBtn = document.getElementById('step3Next');
+            if (nextBtn && selectedDate) {
+                nextBtn.disabled = false;
+                nextBtn.classList.remove('disabled');
+                nextBtn.classList.add('btn-primary');
+                nextBtn.style.backgroundColor = '#4A628A';
+                nextBtn.style.borderColor = '#4A628A';
+                nextBtn.style.cursor = 'pointer';
+            }
             break;
         }
     }
 
-    // Enable next button if a time is selected
+    // Update button state through the standard function as well
     updateNextButtonState();
 }
 
@@ -413,18 +463,21 @@ function updateNextButtonState() {
 
     nextBtn.disabled = !isValid;
     nextBtn.innerHTML = nextBtnText;
-    
-    if (isValid) {
-        nextBtn.classList.remove('disabled', 'btn-outline-secondary');
+      if (isValid) {
+        nextBtn.classList.remove('disabled');
         nextBtn.classList.add('btn-primary');
+        nextBtn.style.backgroundColor = '#4A628A';
+        nextBtn.style.borderColor = '#4A628A';
         nextBtn.style.cursor = 'pointer';
-        nextBtn.style.pointerEvents = 'auto';
+        nextBtn.disabled = false;
         console.log('Button enabled');
     } else {
-        nextBtn.classList.add('disabled', 'btn-outline-secondary');
+        nextBtn.classList.add('disabled');
         nextBtn.classList.remove('btn-primary');
+        nextBtn.style.backgroundColor = '#dee2e6';
+        nextBtn.style.borderColor = '#dee2e6';
         nextBtn.style.cursor = 'not-allowed';
-        nextBtn.style.pointerEvents = 'none';
+        nextBtn.disabled = true;
         console.log('Button disabled');
     }
 
@@ -499,9 +552,7 @@ function navigateStep(direction) {
     const currentIndex = Array.from(steps).indexOf(currentStep);
     const nextIndex = currentIndex + direction;
 
-    console.log('Current index:', currentIndex, 'Next index:', nextIndex);
-
-    if (nextIndex >= 0 && nextIndex < steps.length) {
+    console.log('Current index:', currentIndex, 'Next index:', nextIndex);    if (nextIndex >= 0 && nextIndex < steps.length) {
         // Validate before moving forward
         if (direction > 0) {
             const isValid = validateStep(currentIndex);
@@ -510,6 +561,10 @@ function navigateStep(direction) {
                 console.log('Validation failed, staying on current step');
                 return;
             }
+            // Reset any error messages
+            const currentStepEl = document.querySelector('.step-content:not(.d-none)');
+            const errorAlerts = currentStepEl.querySelectorAll('.alert-danger');
+            errorAlerts.forEach(alert => alert.remove());
         }
 
         // Hide current step
@@ -643,106 +698,55 @@ async function submitAppointment() {
     const originalText = confirmBtn.innerHTML;
 
     try {
-        console.log('Starting appointment submission...'); // Debug log
-
-        // Validate all required fields
         if (!selectedPet || !selectedService || !selectedDate || !selectedTime) {
             throw new Error('Please fill in all required fields');
+        }
+
+        // Get auth token
+        const token = localStorage.getItem('token');
+        if (!token) {
+            throw new Error('Not authenticated');
         }
 
         confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i> Booking...';
         confirmBtn.disabled = true;
 
-        // Format the date and time properly
-        const appointmentDateTime = new Date(selectedDate);
-        const [hours, minutes] = selectedTime.split(':');
-        appointmentDateTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        const dateTime = `${selectedDate.toISOString().split('T')[0]}T${selectedTime}`;
 
-        // Create appointment data
         const appointmentData = {
-            petId: selectedPet,           
-            serviceId: selectedService,   
-            dateTime: appointmentDateTime.toISOString(),
+            dateTime: dateTime,
+            pet: selectedPet,
+            service: selectedService,
             notes: document.getElementById('appointmentNotes')?.value || ''
         };
 
-        console.log('Sending appointment data:', appointmentData); // Debug log
+        console.log('Submitting appointment:', appointmentData);
 
-        const response = await makeAuthenticatedRequest('/api/appointments/add', {
+        const response = await fetch('/api/appointments/add', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(appointmentData)
         });
 
-        console.log('Response received:', response); // Debug log
-
         if (!response.ok) {
             const errorData = await response.json();
-            console.error('Error response:', errorData); // Debug log
-            throw new Error(errorData.message || 'Failed to book appointment');
+            throw new Error(errorData.message || 'Failed to create appointment');
         }
 
-        const data = await response.json();
-        console.log('Success response:', data); // Debug log
-
-        if (data.success) {
+        const result = await response.json();
+        if (result.success) {
             window.location.href = 'client_appointments.html';
         } else {
-            throw new Error(data.message || 'Failed to book appointment');
+            throw new Error(result.message || 'Failed to create appointment');
         }
     } catch (error) {
-        console.error('Error booking appointment:', error);
-        showError(`Failed to book appointment: ${error.message}`);
+        console.error('Booking error:', error);
+        showError(error.message || 'Failed to book appointment');
+    } finally {
         confirmBtn.innerHTML = originalText;
         confirmBtn.disabled = false;
     }
 }
-
-// Initialize when the page loads
-document.addEventListener('DOMContentLoaded', function() {
-    // Check authentication using token only
-    const token = localStorage.getItem('token');
-    if (!token) {
-        window.location.href = 'client_login.html';
-        return;
-    }
-
-    // Initialize components
-    loadUserPets();
-    loadServices();
-    initializeDatePicker();
-    updateStepIndicators();
-
-    // Set up navigation button handlers for all steps
-    document.querySelectorAll('.next-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            console.log('Next button clicked:', btn.id);
-            e.preventDefault();
-            
-            const currentStep = document.querySelector('.step-content:not(.d-none)');
-            const steps = document.querySelectorAll('.step-content');
-            const currentIndex = Array.from(steps).indexOf(currentStep);
-            const isLastStep = currentIndex === steps.length - 1;
-            
-            if (isLastStep) {
-                submitAppointment();
-            } else {
-                navigateStep(1);
-            }
-        });
-    });
-
-    document.querySelectorAll('.prev-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            console.log('Previous button clicked:', btn.id);
-            e.preventDefault();
-            navigateStep(-1);
-        });
-    });
-
-    // Set initial visibility for step 1
-    updateNextButtonState();
-});
