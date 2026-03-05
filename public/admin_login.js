@@ -1,33 +1,3 @@
-// Hardcoded admin credentials for demo (replace with proper backend authentication)
-const ADMIN_CREDENTIALS = {
-    email: 'admin@pawsandclaws.com',
-    password: 'admin123'
-};
-
-function handleLogin(event) {
-    event.preventDefault();
-    
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const loginError = document.getElementById('loginError');
-    
-    // Simple validation
-    if (email === ADMIN_CREDENTIALS.email && password === ADMIN_CREDENTIALS.password) {
-        // Store admin session
-        localStorage.setItem('adminLoggedIn', 'true');
-        localStorage.setItem('adminEmail', email);
-        
-        // Redirect to admin dashboard
-        window.location.href = 'admin_dashboard.html';
-    } else {
-        // Show error message
-        loginError.classList.remove('d-none');
-        setTimeout(() => {
-            loginError.classList.add('d-none');
-        }, 3000);
-    }
-}
-
 function togglePassword() {
     const passwordInput = document.getElementById('password');
     const eyeIcon = document.querySelector('.fa-eye');
