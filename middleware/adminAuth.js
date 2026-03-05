@@ -11,7 +11,7 @@ const adminAuth = (req, res, next) => {
             ? authHeader.substring(7) 
             : authHeader;
 
-        const decoded = jwt.verify(token, process.env.JWT_ADMIN_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
         // Check if the user is an admin
         if (!decoded.isAdmin) {

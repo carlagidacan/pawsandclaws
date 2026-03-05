@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/order');
 const User = require('../models/user');
+const adminAuth = require('../middleware/adminAuth');
 
 // Get recent orders
-router.get('/recent', async (req, res) => {
+router.get('/recent', adminAuth, async (req, res) => {
     try {
         const recentOrders = await Order.find()
             .sort({ createdAt: -1 })

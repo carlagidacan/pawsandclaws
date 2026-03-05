@@ -8,6 +8,7 @@ const {
 } = require('../controllers/appointmentController');
 
 const auth = require('../middleware/auth');
+const adminAuth = require('../middleware/adminAuth');
 const Appointment = require('../models/appointment');
 const Pet = require('../models/pet');
 const User = require('../models/user');
@@ -140,7 +141,7 @@ router.get('/upcoming', async (req, res) => {
     }
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', adminAuth, async (req, res) => {
     try {
         const appointments = await Appointment.find()
             .sort({ dateTime: 1 })

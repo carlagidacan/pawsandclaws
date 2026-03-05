@@ -1,17 +1,33 @@
 // Fetch and process dashboard data
 async function fetchDashboardData() {
     try {
+        // Get admin token from localStorage
+        const adminToken = localStorage.getItem('adminToken');
+        if (!adminToken) {
+            window.location.href = 'admin_login.html';
+            return;
+        }
+
         // Fetch appointments with proper headers
         const [appointmentsResponse, ordersResponse] = await Promise.all([
             fetch('/api/appointments/all', {
                 method: 'GET',
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${adminToken}`
                 },
                 credentials: 'include'
             }),
-            fetch('/api/orders/recent')
+            fetch('/api/orders/recent', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${adminToken}`
+                },
+                credentials: 'include'
+            })
         ]);
 
         if (!appointmentsResponse.ok || !ordersResponse.ok) {
